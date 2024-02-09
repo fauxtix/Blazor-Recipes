@@ -1,0 +1,117 @@
+﻿@using Receitas_API.Models
+@using Receitas_API.Pages.Recipes
+
+<div class="recipe-card">
+    <div class="recipe-card-body">
+        <div class="img-box">
+            <img class="img-fluid img-thumbnail"
+                 src="@Recipe.thumbnail_url" alt="imagem da receita" />
+        </div>
+
+        <h6 class="recipe-card-name"><b>@Recipe.name</b></h6>
+         <div class="d-flex justify-content-between align-items-center m-1">
+            <SfChip>
+                <ChipItems>
+                    @foreach (var item in Recipe.tags.Take(2))
+                    {
+                        <ChipItem CssClass="e-outline" Text="@item.display_name"></ChipItem>
+                    }
+                </ChipItems>
+            </SfChip>
+        </div>
+
+         <div class="recipe-icons">
+            <article>
+                <i class="fas fa-user-friends"></i><span class="ml-2" style="font-size:small">@Recipe.num_servings</span>
+            </article>
+        </div>
+
+        <div class="card-options">
+            <SfButton IconCss="fa fa-table" CssClass="e-primary" Content="View detail" @onclick="ShowDetail" />
+            <SfButton IconCss="fa fa-play" CssClass="e-primary" Content="Play video"
+                      @onclick="(e) => ShowVideo(Recipe.original_video_url, Recipe.name)" />
+        </div>
+    </div>
+</div>
+
+<SfDialog Width="60%"
+          Height="86%"
+          MinHeight="86%"
+          IsModal="true"
+          ShowCloseIcon="false"
+          EnableResize="true"
+          AllowDragging="true"
+          @bind-Visible="VideoVisibility">
+    <DialogTemplates>
+        <Content>
+            <div>Video: @video_title</div>
+            <br />
+            <div class="d-flex flex-column p-2 align-content-center border border-info">
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe id="videoPlayer" class="embed-responsive-item" src="@video_url" allowfullscreen></iframe>
+                </div>
+            </div>
+        </Content>
+        <FooterTemplate>
+            <div class="modal-footer">
+                <SfButton CssClass="e-btn e-success e-round-corner" IconCss="e-icons e-close-wf-icon"
+                          @onclick="()=>CloseVideoDialog()">
+                    &nbsp;Fechar
+                </SfButton>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@Effects" Duration=600></DialogAnimationSettings>
+</SfDialog>
+
+
+
+
+
+
+<style type="text/css" scoped>
+    .card-options {
+        display: flex;
+        position:relative;
+        justify-content: space-around;
+        align-items:center;
+        gap: 6px;
+        padding: 3px;
+        right:auto;
+        bottom:0;
+    }
+
+    .e-chip .e-chip-text {
+        font-size: 0.7rem;
+        color: black;
+        font-weight: normal;
+    }
+
+    .e-chip-list .e-chip.e-outline {
+        border-color: #e513135b;
+        border-width: 3px;
+    }
+
+    .recipe-icons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 0.5rem 5px;
+        text-align: center;
+    }
+
+        .recipe-icons i {
+            font-size: 1.5rem;
+            /* color:  var(--primary-500); */
+        }
+
+        .recipe-icons h5,
+        .recipe-icons p {
+            margin-bottom: 0;
+            font-size: 0.85em;
+        }
+
+        .recipe-icons p {
+            color: var(--grey-600);
+        }
+  </style>

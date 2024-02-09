@@ -1,0 +1,41 @@
+﻿@using Receitas_API.Models
+<div class="col-3 mx-auto my-auto d-block ">
+    <img width="64" height="64" src="@ImageFile" />
+</div>
+
+@code {
+    protected string ImageFile { get; set; }
+
+    [Parameter]
+    public Enums.TransactionImage Operation { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        switch (Operation)
+        {
+            case Enums.TransactionImage.Create:
+                ImageFile = "images/new_file256_25213.png";
+                break;
+            case Enums.TransactionImage.Update:
+                ImageFile = "images/edit_22164.png";
+                break;
+            case Enums.TransactionImage.Delete:
+                ImageFile = "images/remove-icon-png-7133.png";
+                break;
+            case Enums.TransactionImage.Backup:
+                ImageFile = "images/database-icon.png";
+                break;
+            case Enums.TransactionImage.Zip:
+                ImageFile = "images/zip-icon.png";
+                break;
+            case Enums.TransactionImage.Warning:
+                ImageFile = "images/warning-icon.png";
+                break;
+            case Enums.TransactionImage.Info:
+                ImageFile = "images/info.png";
+                break;
+        }
+
+        StateHasChanged();
+    }
+}

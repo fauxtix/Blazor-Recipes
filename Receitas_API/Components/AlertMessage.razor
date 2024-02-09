@@ -1,0 +1,47 @@
+﻿@using Receitas_API.Models
+
+@if (!string.IsNullOrWhiteSpace(Message))
+{
+    <div class="alert @alertClass">@Message <span @onclick="HideMessage"></span></div>
+}
+
+@code {
+    [Parameter]
+    public string Message { get; set; }
+
+    private Enums.AlertMessageType messageType;
+    [Parameter]
+    public Enums.AlertMessageType MessageType
+    {
+        get => messageType;
+        set
+        {
+            messageType = value;
+            switch (messageType)
+            {
+                case Enums.AlertMessageType.Error:
+                    alertClass = "alert-danger";
+                    break;
+                case Enums.AlertMessageType.Warning:
+                    alertClass = "alert-warning";
+                    break;
+                case Enums.AlertMessageType.Success:
+                    alertClass = "alert-success";
+                    break;
+                case Enums.AlertMessageType.Info:
+                    alertClass = "alert-info";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    protected string alertClass { get; set; } = "alert-info";
+
+    void HideMessage()
+    {
+        Message = string.Empty;
+    }
+}

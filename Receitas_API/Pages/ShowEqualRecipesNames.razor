@@ -1,0 +1,63 @@
+﻿@page "/showequalrecipesnames"
+@using Receitas_API.Pages.CodeBehind
+@using Receitas_API.Data
+@using Receitas_API.Models
+
+
+
+<h3>Show Equal Recipes Names</h3>
+
+@if (recipesWithSameDescription is null)
+{
+    <Receitas_API.Components.LoadingData spinnerMessage="Carregando receitas com o mesmo nome..." />
+}
+else
+{
+    <div class="table table-responsive table-striped text-center">
+        <SfGrid @ref="EqualsGridObj" ID="gridid"
+            DataSource="recipesWithSameDescription"
+            AllowPaging="true"
+            AllowSorting="true"
+            AllowFiltering="true"
+            AllowPdfExport="true"
+            AllowExcelExport="true"
+            TValue="BrasilianEqualNames"
+            EnableHover="true"
+            Toolbar="@(new List<string>() { "PdfExport", "ExcelExport", "Search" })"
+            RowHeight="32">
+            <GridPageSettings PageSize="5" PageCount="5" PageSizes="true"></GridPageSettings>
+            <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+            <GridEvents OnToolbarClick="OnToolbarClickHandler" TValue="BrasilianEqualNames"></GridEvents>
+            <GridColumns>
+                <GridColumn Field=@nameof(BrasilianEqualNames.RecipeName) HeaderText="Receita" Width="400" />
+                <GridColumn Field=@nameof(BrasilianEqualNames.RecipeCount) HeaderText="Contagem"
+                        Width="130" HeaderTextAlign="TextAlign.Center" TextAlign="TextAlign.Center" />
+            </GridColumns>
+        </SfGrid>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    protected IBrasilianRecipes_Dapper RecipeService { get; set; }
+    protected IEnumerable<BrasilianEqualNames> recipesWithSameDescription;
+    protected SfGrid<BrasilianEqualNames> EqualsGridObj;
+
+    protected async override Task OnInitializedAsync()
+    {
+        recipesWithSameDescription = (await RecipeService.GetEqualRecipesNames()).ToList();
+    }
+
+    protected async Task OnToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Id == "gridid_pdfexport")
+        {
+            await EqualsGridObj.ExportToPdfAsync();
+        }
+        if (args.Item.Id == "gridid_excelexport")
+        {
+            await EqualsGridObj.ExportToExcelAsync();
+        }
+    }
+}

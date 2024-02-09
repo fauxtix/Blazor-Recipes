@@ -1,0 +1,76 @@
+﻿@using Syncfusion.Blazor.Cards
+@using System.Reflection
+
+<div class="card-body  col-@ColDivider">
+    <SfCard style="height:auto;">
+        <CardHeader ImageUrl="@imgUrl" Title="@Title"></CardHeader>
+        @if (dataset != null && dataset.Count() > 0)
+        {
+            <CardContent EnableSeparator="@EnableSeparator">
+                @foreach (object oProperties in dataset)
+                {
+                    string propertyValue = GetDescriptionValue_FromObject(oProperties);
+                    if (!string.IsNullOrEmpty(propertyValue))
+                    {
+                        <div class="text-body text-justify py-2"
+                                style="line-height:1.3rem; font-family:Roboto; font-size:0.9rem">
+                            @propertyValue
+                        </div>
+                    }
+                }
+            </CardContent>
+        }
+        else
+        {
+            <CardContent EnableSeparator="@EnableSeparator">
+                <div class="card-text mt-0"><img src="@NoData_ImageSrc" /></div>
+            </CardContent>
+        }
+    </SfCard>
+</div>
+
+@code {
+
+    [Parameter]
+    public string imgUrl { get; set; }
+
+    [Parameter]
+    public string PropertyToShow { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ColDivider { get; set; }
+
+    [Parameter]
+    public string NoData_ImageSrc { get; set; }
+
+    [Parameter]
+    public bool EnableSeparator { get; set; }
+
+    [Parameter]
+    public IEnumerable<object> dataset { get; set; }
+
+
+    private string GetDescriptionValue_FromObject(Object obj)
+    {
+        string output = "";
+        Type t = obj.GetType();
+        PropertyInfo[] props = t.GetProperties();
+        foreach (var prop in props)
+        {
+            if (prop.GetIndexParameters().Length == 0)
+            {
+                if (prop.Name == PropertyToShow)
+                {
+                    output = prop.GetValue(obj).ToString();
+                }
+            }
+            else
+                output = "";
+        }
+
+        return output;
+    }
+}

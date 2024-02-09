@@ -1,0 +1,58 @@
+﻿@using Receitas_API.Models
+@using Receitas_API.Data
+
+<div class="container-fluid">
+    <p><img class="img-thumbnail" src="images/icons8-ingredients-80.png" width="48" height="48" /></p>
+    <p class="font-weight-bold">Ingredientes</p>
+    <ul>
+        @foreach (var item in Ingredients)
+        {
+            if (!string.IsNullOrEmpty(item.Description.Trim()))
+            {
+                <li>@item.Description</li>
+            }
+        }
+    </ul>
+
+    <hr class="mb-2" />
+
+    <p><img class="img-thumbnail" src="images/icons8-frying-pan-80.png" width="48" height="48" /></p>
+    <p class="font-weight-bold">Preparação</p>
+
+    @foreach (var preparation in Preparation)
+    {
+        <p>@preparation.Description</p>
+    }
+
+    @if (Other is not null)
+    {
+        <p><img class="img-thumbnail" src="images/icons8-concept-96.png" width="48" height="48" /></p>
+        <p class="font-weight-bold">Outros</p>
+        @foreach (var other in Other)
+        {
+            <p>@other.Description</p>
+        }
+        <hr class="mb-2" />
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    public int RecipeId { get; set; }
+
+    [Inject]
+    protected IBrasilianRecipes_Dapper RecipeService { get; set; }
+
+    List<RecipeDbModel.Ingredient> Ingredients;
+    List<RecipeDbModel.Preparation> Preparation;
+    List<RecipeDbModel.Other> Other;
+
+
+    protected override void OnParametersSet()
+    {
+        Ingredients = RecipeService.GetIngredientsById(RecipeId);
+        Preparation = RecipeService.GetPreparationById(RecipeId);
+        Other = RecipeService.GetOtherById(RecipeId);
+    }
+}

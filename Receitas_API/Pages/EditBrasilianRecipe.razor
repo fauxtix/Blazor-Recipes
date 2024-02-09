@@ -1,0 +1,42 @@
+﻿@using Receitas_API.Data
+@using Receitas_API.Models
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Buttons
+
+<div class="d-flex flex-column justify-content-center align-items-start m-1">
+    <SfTextBox Enabled="false" Placeholder="ID#" Width="60px"
+               FloatLabelType="@FloatLabelType.Auto"
+               Value="@SelectedRecord.Id.ToString()">
+    </SfTextBox>
+    <SfTextBox Enabled="true" Placeholder="Descrição"
+               CssClass="form-control e-corner"
+               FloatLabelType="@FloatLabelType.Auto"
+               @bind-Value="@SelectedRecord.Description">
+    </SfTextBox>
+</div>
+
+<style>
+    .InputId {
+        margin-top: 10px;
+        width: 70px;
+        background-color: black;
+        color: white;
+        align-content: end;
+    }
+
+    .text-multiline textarea {
+        height: 80px !important;
+    }
+
+    .center {
+        text-align: center;
+        border: 3px solid green;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public RecipeDbModel.Recipe SelectedRecord { get; set; }
+}

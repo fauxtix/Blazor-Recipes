@@ -1,0 +1,488 @@
+﻿@page "/afrodite"
+
+@using System.Linq;
+@using Syncfusion.Blazor.Spinner
+@using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Grids;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Cards
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.DropDowns
+
+@using Receitas_API.Data
+@using Receitas_API.Models
+@using Receitas_API.Components
+
+
+@inherits CodeBehind.BrasilianRecipesBase
+
+@{
+    var Tool = (new List<object>() {      
+        new ItemModel()
+        {
+        Type = ItemType.Separator
+        },
+        new ItemModel()
+        {
+            CssClass = "e-success",
+            PrefixIcon = "fa fa-question",
+            ShowTextOn = DisplayMode.Toolbar,
+            Text = "Nomes iguais",
+            Align = ItemAlign.Left,
+            Id = "DupNames"
+        },
+                new ItemModel()
+        {
+        Type = ItemType.Separator
+        },
+        "Search"
+    });
+    var InitSearch = (new string[] { "Description", "Id" });
+    var Filtering = new
+    {@@operator = "contains"
+    };
+}
+
+<header>
+    <div class="module-title">
+        <div class="title">Cozinha Brasileira</div>
+        <div class="underline"></div>
+    </div>
+</header>
+
+
+<div id="spinnerContainer"></div>
+<SfSpinner @ref="SpinnerObj"
+           Label="Processando..."
+           Type="@SpinnerType.Bootstrap4"
+           CssClass="e-spin-overlay">
+</SfSpinner>
+
+@if (brasilianRecipes == null)
+{
+    <!--Big blue-->
+    <div class="preloader-wrapper active">
+        <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+                <div class="circle"></div>
+            </div>
+            <div class="gap-patch">
+                <div class="circle"></div>
+            </div>
+            <div class="circle-clipper right">
+                <div class="circle"></div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div id="target" class="col-lg-12 control-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div> @* class="col-md-6 col-xs-12 col-sm-12"> *@
+                    <SfGrid @ref="gridObj"
+                        DataSource="@brasilianRecipes"
+                        AllowPaging="true"
+                        AllowSorting="true"
+                        AllowFiltering="true"
+                        Toolbar=@Tool
+                        RowHeight="40"
+                        AllowTextWrap="true">
+                        <GridPageSettings PageSize="12" PageCount="12" PageSizes="true"></GridPageSettings>
+                        <GridEvents OnToolbarClick="ToolbarClickHandler"
+                                    CommandClicked="OnCommandClicked" 
+                                RowSelected="RowSelectedHandler"
+                                OnActionBegin="OnBeginHandler" TValue="RecipeDbModel.Recipe"></GridEvents>
+                        <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+                        <GridSearchSettings Fields=@InitSearch Operator=Syncfusion.Blazor.Operator.Contains IgnoreCase="true"></GridSearchSettings>
+                        <GridColumns>
+                            <GridColumn Field=@nameof(RecipeDbModel.Recipe.Id) IsPrimaryKey="true" AllowEditing="false"
+                                    Visible="false" HeaderText="ID#"
+                                    Width="110"></GridColumn>
+                            <GridColumn Field=@nameof(RecipeDbModel.Recipe.Description) HeaderText="Recipe Name"
+                                    Width="350"></GridColumn>
+
+                            <GridColumn HeaderText="" AllowFiltering="false" AllowSorting="false" Width="100">
+                                <GridCommandColumns>
+                                    <GridCommandColumn Type=CommandButtonType.Edit
+                                                       ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-primary e-round",
+                                                                           IconCss = "fa fa-edit"
+                                                                       })">
+                                    </GridCommandColumn>
+                                    <GridCommandColumn Type=CommandButtonType.Delete
+                                                       ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-danger e-round",
+                                                                           IconCss = "fa fa-trash"
+                                                                       })">
+                                    </GridCommandColumn>
+                                    <GridCommandColumn Type=CommandButtonType.None
+                                                       ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-success e-round",
+                                                                           IconCss = "fa fa-eye"
+                                                                       })">
+                                    </GridCommandColumn>
+                                </GridCommandColumns>
+                            </GridColumn>
+
+                        </GridColumns>
+                    </SfGrid>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<ConfirmDeleteComponent Visible="@DeleteRecordConfirmVisibility"
+                        AlertMessageType="Enums.AlertMessageType.Error"
+                        ConfirmationText="Confirme operação, p.f."
+                        DialogTitle="Remover Receita"
+                        DialogSubTitle="@SelectedRecord.Description"
+                        Module="Enums.Modules.Recipes"
+                        Message="@DeleteCaption"
+                        OnConfirmationYes="DeleteRecipe"
+                        OnConfirmationNo="@(()=>DeleteRecordConfirmVisibility= false)" />
+
+<SfDialog 
+          Width="25%"
+          Height="auto"
+          MinHeight="200px"
+          IsModal="true"
+          CloseOnEscape="false"
+          ShowCloseIcon="false"
+          @bind-Visible="EditDialogVisibility">
+    <DialogTemplates>
+        <Header>
+            <div>Editar receita</div>
+        </Header>
+        <Content>
+            <EditBrasilianRecipe SelectedRecord="@SelectedRecord" />
+        </Content>
+        <FooterTemplate>
+            <div>
+                <SfButton CssClass="e-btn e-primary e-icon e-round-corner" IconCss="fa fa-save"
+                          @onclick="AddOrSaveRecord">
+                    Save
+                </SfButton>
+                <SfButton CssClass="e-btn e-normal e-icon" IconCss="fa fa-times"
+                          Type="submit" @onclick="Voltar">
+                    Back
+                </SfButton>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@Effects" Duration=400></DialogAnimationSettings>
+</SfDialog>
+
+
+<SfDialog 
+          Width="40%"
+          Height="auto"
+          IsModal="true"
+          Visible="@DupNamesDialogVisibility"
+          ShowCloseIcon="false">
+    <DialogTemplates>
+        <Header>
+            <div>
+                Receitas com nome igual
+            </div>
+        </Header>
+        <Content>
+            <ShowEqualRecipesNames />
+        </Content>
+        <FooterTemplate>
+            <div>
+                <SfButton CssClass="e-btn e-primary e-round-corner" IconCss="e-icons e-close-wf-icon"
+                          @onclick="@(() => DupNamesDialogVisibility = false)">
+                    Back
+                </SfButton>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@Effects" Duration=400></DialogAnimationSettings>
+</SfDialog>
+
+<SfDialog 
+          Width="60%"
+          Height="auto"
+          IsModal="true"
+          CloseOnEscape = "false"
+          Visible="@ShowDetailDialogVisibility"
+          ShowCloseIcon="false">
+    <DialogTemplates>
+        <Header>
+            <div class="font-weight-bold">@SelectedRecord.Description</div>
+        </Header>
+        <Content>
+            <BrasilianRecipeDetail RecipeId="@SelectedRecord.Id" />
+        </Content>
+        <FooterTemplate>
+            <div>
+                <SfButton CssClass="e-btn e-primary e-round-corner" IconCss="fa fa-times"
+                          @onclick="@(() => ShowDetailDialogVisibility = false)">
+                    Back
+                </SfButton>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@Effects" Duration=400></DialogAnimationSettings>
+</SfDialog>
+
+
+<SfToast @ref="ToastObj"
+         Title="@ToastTitle"
+         Content="@ToastContent"
+         CssClass="@ToastCssClass" Timeout="3500"
+         ShowCloseButton="true">
+    <ToastPosition X="Right" Y="Top"></ToastPosition>
+</SfToast>
+
+<style>
+
+    #spinnerContainer {
+        position: center;
+        height: 30px;
+    }
+
+    .tab {
+        height: auto;
+    }
+
+    .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
+        stroke: steelblue;
+    }
+
+    .btn {
+        background-color: DodgerBlue;
+        border: none;
+        color: white;
+        padding: 12px 16px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+        /* Darker background on mouse-over */
+        .btn:hover {
+            background-color: RoyalBlue;
+        }
+
+    .avatar {
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    .e-btn-hide {
+        display: none;
+    }
+
+    .Table {
+        border-collapse: separate;
+        border-spacing: 10px;
+        width: 85%;
+        margin: 0px -5px 0px;
+    }
+
+    /*   @@font-face {
+                                                                font-family: 'button-icons';
+                                                                src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+                                                                font-weight: normal;
+                                                                font-style: normal;
+                                                            }*/
+
+    .e-btn-sb-icons {
+        font-family: 'button-icons';
+        line-height: 1;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .e-search:before {
+        content: '\e954';
+    }
+
+    .e-upload:before {
+        content: '\e725';
+    }
+
+    .e-font:before {
+        content: '\e34c';
+    }
+
+    .e-plus-icon::before {
+        content: '\e823';
+    }
+
+    .e-add-icon::before {
+        content: '\e70a';
+    }
+
+    .e-edit-icon::before {
+        content: '\e944';
+    }
+
+    .e-delete-icon::before {
+        content: '\e965';
+    }
+
+    .e-save-icon::before {
+        content: '\ebea';
+    }
+
+    .e-close-wf-icon::before {
+        content: '\e7a7';
+    }
+
+    .e-round-corner {
+        border-radius: 10px;
+    }
+
+    .dlgbtn {
+        margin-right: 10px;
+    }
+
+    #target {
+        height: 460px;
+        min-height: 350px;
+    }
+
+    .dlgbtn {
+        margin-right: 10px;
+    }
+
+    .fabric #target #prompt_dialog.e-dialog {
+        height: 291px;
+    }
+
+    .material #target #prompt_dialog.e-dialog {
+        height: 270px;
+    }
+
+    #target #prompt_dialog.e-dialog {
+        height: 270px;
+    }
+
+    .bootstrap4 #target #prompt_dialog.e-dialog {
+        height: 285px;
+    }
+
+    @@font-face {
+        font-family: 'button-icons';
+        src: url(data:application/x-font-ttf;charset=utf-8;base64,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) format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    .e-btn-sb-icons {
+        font-family: 'button-icons';
+        line-height: 1;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .e-search:before {
+        content: '\e993';
+    }
+
+    .e-Pdf-icon:before {
+        content: '\e70d';
+    }
+
+    .FB_filter:before {
+        content: '\e21c';
+    }
+
+    .FilterClose_F:before {
+        content: '\ea7a';
+    }
+
+
+    .e-backward-icon:before {
+        content: '\e977';
+    }
+
+    .e-close-wf-icon {
+        content: '\e878';
+    }
+
+    .e-upload:before {
+        content: '\e725';
+    }
+
+    .e-font:before {
+        content: '\e34c';
+    }
+
+    .e-plus-icon::before {
+        content: '\e823';
+    }
+
+    .e-add-icon::before {
+        content: '\e70a';
+    }
+
+    .e-edit-icon::before {
+        content: '\e944';
+    }
+
+    .e-delete-icon::before {
+        content: '\e965';
+    }
+
+    .e-save-icon::before {
+        content: '\ebea';
+    }
+
+    .e-close-wf-icon::before {
+        content: '\e761';
+    }
+
+    .company-header-avatar {
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 60px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 60px;
+        -moz-background-clip: padding;
+        border-radius: 60px;
+        background-clip: padding-box;
+        margin: 7px 0 0 5px;
+        float: left;
+    }
+
+    .circular {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .circular img {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+</style>

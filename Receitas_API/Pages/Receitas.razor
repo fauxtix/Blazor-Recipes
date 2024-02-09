@@ -1,0 +1,282 @@
+﻿@page "/receitas"
+@using RestSharp;
+@using Newtonsoft.Json
+@using Receitas_API.Data
+@using Receitas_API.Models
+@using Receitas_API.Components
+
+@using Syncfusion.Blazor.DropDowns
+@inject IJSRuntime JS
+
+<div id="spinnerContainer"></div>
+<div id="spinnerContainer"></div>
+<SfSpinner @ref="SpinnerObj"
+           Label="Processando..."
+           Type="@SpinnerType.Bootstrap4" Size="50"
+           CssClass="e-spin-overlay">
+</SfSpinner>
+<h3>Spoonacular recipes</h3>
+<hr />
+<div class="container-fluid">
+    <div class="dropdown-menu-md-left w-25">
+        <p class="h6">Choose country/region</p><span class="showing"></span>
+        <SfDropDownList PopupWidth="250px" PopupHeight="450px" @bind-Value="@RegionName" AllowFiltering="true"
+                        CssClass="custom-class e-corner"
+                        FilterBarPlaceholder="Filter" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
+                        TItem="CuisineRegion" TValue="string" Placeholder="Select" DataSource="@RegionsData">
+            <DropDownListEvents TItem="CuisineRegion" TValue="string" ValueChange="onChange"></DropDownListEvents>
+            <DropDownListFieldSettings Text="RegionName" Value="ID"></DropDownListFieldSettings>
+        </SfDropDownList>
+    </div>
+</div>
+<hr />
+@if (recipesTitles == null)
+{
+    <LoadingData spinnerMessage="Loading recipes from Spoonacular api" />
+}
+else
+{
+    foreach (var recipesTitles in recipesTitles.results)
+    {
+        recipeId = recipesTitles.id;
+        var t = Task.Run(() => GetRecipeDetails(recipeId));
+        t.Wait();
+
+        recipeDetails = t.Result;
+
+        <div class="control-section">
+            <div class="row">
+                <div class="col-xl-3 col-md-12 col-sm-12 content">
+                    <a class="d-block mb-4 h-100">
+                        <div class="img-box">
+                            <img class="img-fluid img-thumbnail"
+                                 src="@recipesTitles.image" alt="Recipe image" />
+                        </div>
+                        <p class="h5 font-weight-bold">
+                            @recipesTitles.title
+                        </p>
+                    </a>
+                </div>
+                <div class="col-xl-9 col-md-12 col-sm-12 my-2 content">
+
+                    <p class="h6 font-weight-bold">Ingredients and Preparation
+                        <span><img src="images/icons8-ingredients-64.png" width="32" height="32" />&nbsp;<img src="images/icons8-frying-pan-80.png" width="32" height="32" /></span><span></span>
+                    </p>
+
+                    @foreach (var mainSteps in recipeDetails)
+                    {
+                        mainStepsDetails = mainSteps.steps.ToList();
+                        foreach (var detail in mainStepsDetails)
+                        {
+                            string ingredients = "";
+                            foreach (var ingredient in detail.ingredients)
+                            {
+                                ingredients += ingredient.name + ", ";
+                            }
+                            if (!string.IsNullOrEmpty(ingredients))
+                            {
+                                ingredients = ingredients.Substring(0, ingredients.Length - 2);
+                            }
+                            <SfCard ID="DetailCard" CssClass="my-2">
+                                @if (!string.IsNullOrEmpty(ingredients))
+                                {
+                                    <CardContent>
+                                        <ChildContent>
+                                            <div class="text-body font-weight-bold">&nbsp;@ingredients</div>
+                                        </ChildContent>
+                                    </CardContent>
+                                }
+                                <CardContent EnableSeparator="true" Content="@detail.step"></CardContent>
+                            </SfCard>
+                        }
+                    }
+                    <div class="d-flex justify-content-end my-2">
+                        <SfButton class="oi oi-arrow-circle-top p-2 e-primary" @onclick="GoTop">&nbsp;&nbsp;Go top</SfButton>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </div>
+    }
+}
+<div class="col-12 col-sm-6">
+    <div class="top-social-info text-right">
+        <a href="#"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
+        <a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+        <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+        <a href="#"><i class="fab fa-dribbble" aria-hidden="true"></i></a>
+        <a href="#"><i class="fab fa-behance" aria-hidden="true"></i></a>
+        <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+    </div>
+</div>
+
+
+
+
+<style>
+    body {
+        font-size: medium;
+        font-family: Impact, 'Lucida Handwriting', sans-serif;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    #SideCard .e-card .e-card-content {
+        height: 376px;
+        margin: 16px;
+        padding-top: 10px;
+    }
+
+    #DetailCard .e-card .e-card-content {
+        padding-top: 0px;
+    }
+
+    /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
+                stroke: green;
+            }*/
+
+    .e-card > .e-card-image {
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        min-height: 350px;
+        min-width: 350px;
+    }
+    /* .row {
+                        width: 80%;
+                        margin: auto;
+                    }*/
+
+    .e-btn {
+        margin-left: 4px;
+    }
+
+    /*    .e-card .e-card-content {
+                        padding-top: 0px;
+                        font-size:medium;
+                }    */
+
+
+    .header-area .top-header-area .top-social-info a {
+        display: inline-block;
+        color: #b6b6b6;
+        font-size: 13px;
+        margin-right: 30px;
+    }
+
+    #PageTop {
+        display: inline-block;
+        background-color: #FF9800;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        border-radius: 4px;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        transition: background-color .3s, opacity .5s, visibility .5s;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+    }
+
+        #PageTop::after {
+            content: "\f077";
+            font-family: FontAwesome;
+            font-weight: normal;
+            font-style: normal;
+            font-size: 2em;
+            line-height: 50px;
+            color: #fff;
+        }
+
+        #PageTop:hover {
+            cursor: pointer;
+            background-color: #333;
+        }
+
+        #PageTop:active {
+            background-color: #555;
+        }
+
+        #PageTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+    /* Styles for the content section */
+
+    .content {
+        width: 90%;
+        margin: 10px auto;
+        font-family: 'Merriweather', serif;
+        font-size: 17px;
+        color: #6c767a;
+        line-height: 1.9;
+    }
+
+    /*-- Images Hover Effects CSS --*/
+    .img-box {
+        position: relative;
+        transition: .5s;
+        max-height: 330px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        border-radius: 0px 100px;
+    }
+
+        .img-box img {
+            max-width: 100%;
+            border: 3px solid #FFC107;
+            position: relative;
+            width: 100%;
+        }
+
+        .img-box::before {
+            content: '';
+            border-left: 3px solid #ffffff;
+            border-top: 3px solid #ffffff;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 50px;
+            height: 50px;
+            z-index: 1;
+            transition: .5s;
+        }
+
+        .img-box::after {
+            content: '';
+            border-right: 3px solid #ffffff;
+            border-bottom: 3px solid #ffffff;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            z-index: 2;
+            transition: .5s;
+        }
+
+        .img-box:hover {
+            transform: scale(1.04);
+        }
+
+            .img-box:hover::before {
+                left: 10px;
+                top: 10px;
+            }
+
+            .img-box:hover::after {
+                right: 10px;
+                bottom: 10px;
+            }
+</style>
+

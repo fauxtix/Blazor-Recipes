@@ -1,0 +1,110 @@
+﻿@using Receitas_API.Models
+
+<div id="target">
+    <SfDialog Target="#target" Width="300px" ShowCloseIcon="true" @bind-Visible="Visibility" AllowPrerender="true" IsModal="true">
+
+        <DialogTemplates>
+            <Header> Dialog </Header>
+            <Content>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <a class="d-block mb-4 h-100">
+                            <div class="img-box">
+                                <img class="img-fluid img-thumbnail"
+                                     @onclick="(e) => ShowVideo(item.original_video_url, item.name)"
+                                     src="@item.thumbnail_url" alt="Click para ver vídeo" />
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-9">
+                        <div style="font-weight:bold; color:cornflowerblue">
+                            @item.name
+                            @if (!string.IsNullOrEmpty(item.original_video_url))
+                            {
+                                <span style="font-weight:normal; color:black">&nbsp;&nbsp;<i class="fa fa-video icon-green"></i></span>
+                            }
+                        </div>
+                        <hr />
+                        @if (item.recirc_feeds is not null && item.recirc_feeds.meal.Count > 0)
+                        {
+                            <p style="font-size:smaller">
+                                [@item.recirc_feeds.meal[0]]
+                            </p>
+                        }
+                        @if (item.prep_time_minutes is not null)
+                        {
+                            <p style="font-size:medium">
+                                Tempo de preparação: [@item.prep_time_minutes]&nbsp;&nbsp;&nbsp;&nbsp;Doses: [@item.num_servings]
+                            </p>
+                        }
+
+                        @if (item.nutrition is not null && item.nutrition.calories is not null)
+                        {
+                            <p style="font-weight:bold">Nutrição <span style="font-weight:100"> (gramas)</span></p>
+                            <table class="table table-sm table-bordered" cellspacing="5" width="85%" style="text-align: center; font-size:small">
+                                <tr>
+                                    <th>Calorias</th>
+                                    <th>Carboidratos</th>
+                                    <th>Gordura</th>
+                                    <th>Fibra</th>
+                                    <th>Proteína</th>
+                                    <th>Açúcar</th>
+                                </tr>
+                                <tr>
+                                    <td>@item.nutrition.calories</td>
+                                    <td>@item.nutrition.carbohydrates</td>
+                                    <td>@item.nutrition.fat</td>
+                                    <td>@item.nutrition.fiber</td>
+                                    <td>@item.nutrition.protein</td>
+                                    <td>@item.nutrition.sugar</td>
+                                </tr>
+                            </table>
+                        }
+                        <hr />
+                        @if (item.instructions is not null)
+                        {
+                            @foreach (var instruction in item.instructions)
+                            {
+                                <p style="font-size:medium; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">@instruction.display_text</p>
+                            }
+                        }
+                        else
+                        {
+                            <p style="font-weight:bold;color:red">Sem instruções</p>
+                        }
+
+                    </div>
+                </div>
+            </Content>
+        </DialogTemplates>
+    </SfDialog>
+</div>
+
+@code {
+    [Parameter] public Result item { get; set; }
+
+    private bool Visibility { get; set; } = false;
+
+    string video_url;
+    string video_title;
+    protected bool VideoVisibility { get; set; }
+
+
+    private void ShowVideo(string url, string title)
+    {
+        if (!string.IsNullOrEmpty(url))
+        {
+            video_url = url;
+            video_title = title;
+            VideoVisibility = true;
+        }
+    }
+
+    private void CloseVideoDialog()
+    {
+        video_url = "";
+        VideoVisibility = false;
+    }
+
+
+}
