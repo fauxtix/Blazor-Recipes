@@ -1,0 +1,71 @@
+﻿@page "/429"
+
+
+  <style>
+    /* Styles for the error card */
+    .error-card {
+      background-color: #fff; /* White background */
+      border-radius: 10px; /* Rounded corners */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+      padding: 20px; /* Padding around the content */
+      max-width: 400px; /* Limit card width */
+      margin: 0 auto 20px; /* Center card and add space below */
+      position: relative; /* Positioning for close button */
+      animation: fadeIn 0.5s ease; /* Animation for entrance */
+    }
+
+    /* Optional: Add more specific styles for different error types */
+    .error-card.error-429 {
+      /* You can customize this further if needed */
+    }
+
+    /* Styles for the error message */
+    .error-message {
+      color: #f44336; /* Red color for error message */
+      font-weight: normal;
+      margin-bottom: 10px; /* Spacing below the message */
+    }
+
+    /* Optional: Style the close button */
+    .error-card .close {
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: #999; /* Light grey color */
+      transition: transform 0.3s ease; /* Smooth transition */
+    }
+
+    /* Optional: Hover effect for close button */
+    .error-card .close:hover {
+      color: #777; /* Darker grey on hover */
+    }
+
+    /* Animation keyframes */
+    @@keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+<div class="error-card error-429">
+    <span class="close" onclick="this.parentElement.style.display='none';">&times;</span> <!-- Close button -->
+    <p class="error-message"><strong>Error 429:</strong> Maximum monthly number of attempts exceeded.</p> <!-- Error message -->
+</div>
+
+@* <div class="d-flex justify-content-center align-items-center">
+    <picture>
+        <source srcset="https://miro.medium.com/v2/resize:fit:640/format:webp/0*gCeoDkAp66lolkmm.png 640w,
+            https://miro.medium.com/v2/resize:fit:720/format:webp/0*gCeoDkAp66lolkmm.png 720w,
+            https://miro.medium.com/v2/resize:fit:750/format:webp/0*gCeoDkAp66lolkmm.png 750w,
+            https://miro.medium.com/v2/resize:fit:786/format:webp/0*gCeoDkAp66lolkmm.png 786w,
+            https://miro.medium.com/v2/resize:fit:828/format:webp/0*gCeoDkAp66lolkmm.png 828w,
+            https://miro.medium.com/v2/resize:fit:1100/format:webp/0*gCeoDkAp66lolkmm.png 1100w,
+            https://miro.medium.com/v2/resize:fit:1400/format:webp/0*gCeoDkAp66lolkmm.png 1400w"
+                sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px" type="image/webp"><source data-testid="og" srcset="https://miro.medium.com/v2/resize:fit:640/0*gCeoDkAp66lolkmm.png 640w, https://miro.medium.com/v2/resize:fit:720/0*gCeoDkAp66lolkmm.png 720w, https://miro.medium.com/v2/resize:fit:750/0*gCeoDkAp66lolkmm.png 750w, https://miro.medium.com/v2/resize:fit:786/0*gCeoDkAp66lolkmm.png 786w, https://miro.medium.com/v2/resize:fit:828/0*gCeoDkAp66lolkmm.png 828w, https://miro.medium.com/v2/resize:fit:1100/0*gCeoDkAp66lolkmm.png 1100w, https://miro.medium.com/v2/resize:fit:1400/0*gCeoDkAp66lolkmm.png 1400w" sizes="(min-resolution: 4dppx) and (max-width: 700px) 50vw, (-webkit-min-device-pixel-ratio: 4) and (max-width: 700px) 50vw, (min-resolution: 3dppx) and (max-width: 700px) 67vw, (-webkit-min-device-pixel-ratio: 3) and (max-width: 700px) 65vw, (min-resolution: 2.5dppx) and (max-width: 700px) 80vw, (-webkit-min-device-pixel-ratio: 2.5) and (max-width: 700px) 80vw, (min-resolution: 2dppx) and (max-width: 700px) 100vw, (-webkit-min-device-pixel-ratio: 2) and (max-width: 700px) 100vw, 700px"><img alt="" class="bg lo oa c" width="700" height="2671" loading="lazy" role="presentation" src="https://miro.medium.com/v2/resize:fit:700/0*gCeoDkAp66lolkmm.png">
+    </picture>
+</div>
+ *@
+ @code {
+
+}

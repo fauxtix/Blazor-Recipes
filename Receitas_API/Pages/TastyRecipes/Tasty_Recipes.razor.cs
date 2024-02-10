@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Pages.Recipes
+namespace Receitas_API.Pages.TastyRecipes
 {
     public partial class Tasty_Recipes
     {
@@ -47,7 +47,6 @@ namespace Receitas_API.Pages.Recipes
 
             tagsList = await FillTagItems();
             AlertMessageVisibility = false;
-            AlertMessageVisibility = false;
             RecipeDetailVisibility = false;
         }
 
@@ -84,6 +83,11 @@ namespace Receitas_API.Pages.Recipes
         {
             RecipeTags tagsData_Temp = new();
             tagsData_Temp = await recipeService.GetRecipesTags();
+            if(tagsData is null)
+            {
+                AlertMessageVisibility = true;
+                return new RecipeTags();
+            }
             StateHasChanged();
 
             return tagsData_Temp;
@@ -91,26 +95,41 @@ namespace Receitas_API.Pages.Recipes
 
         private async Task<List<TagItem>> FillTagItems()
         {
-            var list = tagsData.results.ToList();
-
-            List<TagItem> returnList = new();
-
-            foreach (var item in list)
+            try
             {
-                returnList.Add(new TagItem()
+                if (tagsData.count == 0)
                 {
-                    Id = item.id,
-                    DisplayName = item.display_name
-                });
+                    AlertMessageVisibility = true;
+                    return new List<TagItem>();
+                }
+
+                var list = tagsData.results.ToList();
+
+                List<TagItem> returnList = new();
+
+                foreach (var item in list)
+                {
+                    returnList.Add(new TagItem()
+                    {
+                        Id = item.id,
+                        DisplayName = item.display_name
+                    });
+                }
+
+                List<TagItem> SortedList = returnList.OrderBy(o => o.DisplayName).ToList();
+                TagId = SortedList.FirstOrDefault().Id;
+                searchQuery = tagsData.results.SingleOrDefault(p => p.id == TagId).name;
+
+                recipesList = await GetRecipes_Data(0);
+
+                return SortedList;
+
             }
-
-            List<TagItem> SortedList = returnList.OrderBy(o => o.DisplayName).ToList();
-            TagId = SortedList.FirstOrDefault().Id;
-            searchQuery = tagsData.results.SingleOrDefault(p => p.id == TagId).name;
-
-            recipesList = await GetRecipes_Data(0);
-
-            return SortedList;
+            catch (System.Exception ex)
+            {
+                var x = ex.Message;
+                throw;
+            }
         }
 
         private void ShowVideo(string url, string title)
@@ -139,7 +158,7 @@ namespace Receitas_API.Pages.Recipes
         {
             TagId = 0;
             searchQuery = searchTxtBox.Value;
-            VisibleProperty = true;
+            VisibleProperty = false;
             await Task.Delay(200);
             recipesList = await GetRecipes_Data(1, "Pesquisando texto nas receitas"); // search option = 'q' (1)
             recipesCount = recipesList.count;

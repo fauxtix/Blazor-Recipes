@@ -140,7 +140,7 @@ namespace Receitas_API.Pages.CodeBehind
 
         protected async Task Voltar()
         {
-            ToastTitle = "Edição de Formatos";
+            ToastTitle = "Edição de Receita";
             ToastCssClass = "e-toast-warning";
             ToastContent = "Operação de gravação cancelada";
 
@@ -229,7 +229,7 @@ namespace Receitas_API.Pages.CodeBehind
         protected async Task DeleteRecipe()
         {
             DeleteRecordConfirmVisibility = false;
-            ToastTitle = "Apagar 'Brasilian Recipe";
+            ToastTitle = "Apagar receita";
 
             try
             {
@@ -248,7 +248,7 @@ namespace Receitas_API.Pages.CodeBehind
                 ToastCssClass = "e-toast-danger";
             }
 
-            ToastObj.ShowAsync();
+            await ToastObj.ShowAsync();
 
         }
     }

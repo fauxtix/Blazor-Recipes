@@ -13,8 +13,11 @@
 @inject ITastyApiRecipesService recipeService
 @inject IJSRuntime JS
 
-<PageTitleComponent PageTitle="Receitas"
-                    WithBadge="true" PageSubTitle="@(recipesCount > 0? recipesCount.ToString():"Sem receitas escolhidas")" />
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Notifications
+
+<PageTitleComponent PageTitle="Tasty Recipes"
+                    WithBadge="@(recipesCount > 0)" PageSubTitle="@(recipesCount > 0? recipesCount.ToString():"")" />
 
 <div class="underline"></div>
 <div id="spinnerContainer"></div>
@@ -30,28 +33,31 @@
 }
 else
 {
-    @if (AlertMessageVisibility)
+    @if (tagsList.Count == 0)
     {
-        <AlertMessage Message="Vídeo não está disponível" MessageType="Enums.AlertMessageType.Info"></AlertMessage>
+        <TooManyRequests />
     }
-
-    <div class="top-row">
-        <SfDropDownList PopupHeight="450px" @bind-Value="@TagId" AllowFiltering="true"
-                        CssClass="e-corner"
-                        FilterBarPlaceholder="Filtrar" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
-                        TItem="TagItem" TValue="int" Placeholder="Escolha Tag" DataSource="@tagsList">
-            <DropDownListEvents TItem="TagItem" TValue="int" ValueChange="onChangeTag"></DropDownListEvents>
-            <DropDownListFieldSettings Text="DisplayName" Value="Id"></DropDownListFieldSettings>
-        </SfDropDownList>
-        <div class="col-md-2"></div>
-        <SfTextBox @ref="searchTxtBox" @bind-Value="@text2Search" Placeholder="Texto a pesquisar"
-                   FloatLabelType="FloatLabelType.Never" CssClass="input-control e-corner" ShowClearButton="true">
-        </SfTextBox>
-        <SfButton @ref="searchBtn" CssClass="e-btn e-success e-round-corner" IconCss="fa fa-search" IconPosition="IconPosition.Right"
-                  @onclick="()=>SearchByRecipeName()" Content="Pesquisar">
-        </SfButton>
-    </div>
+    else
+    {
+        <div class="top-row">
+            <SfDropDownList PopupHeight="450px" @bind-Value="@TagId" AllowFiltering="true"
+                            CssClass="e-corner"
+                            FilterBarPlaceholder="Filtrar" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
+                            TItem="TagItem" TValue="int" Placeholder="Escolha Tag" DataSource="@tagsList">
+                <DropDownListEvents TItem="TagItem" TValue="int" ValueChange="onChangeTag"></DropDownListEvents>
+                <DropDownListFieldSettings Text="DisplayName" Value="Id"></DropDownListFieldSettings>
+            </SfDropDownList>
+            <div class="col-md-2"></div>
+            <SfTextBox @ref="searchTxtBox" @bind-Value="@text2Search" Placeholder="Texto a pesquisar"
+                       FloatLabelType="FloatLabelType.Never" CssClass="input-control e-corner" ShowClearButton="true">
+            </SfTextBox>
+            <SfButton @ref="searchBtn" CssClass="e-btn e-success e-round-corner" IconCss="fa fa-search" IconPosition="IconPosition.Right"
+                      @onclick="()=>SearchByRecipeName()" Content="Pesquisar">
+            </SfButton>
+        </div>
+    }
     <hr />
+
 }
 @if (recipesList.results is not null)
 {
@@ -179,6 +185,7 @@ else
             </FooterTemplate>
         </DialogTemplates>
     </SfDialog>
+
 }
 
 
@@ -188,10 +195,10 @@ else
     .top-row {
         display: flex;
         justify-content: space-around;
-        align-items:center;
+        align-items: center;
         gap: 5px;
         margin: 0, 10px;
-        padding:0;
+        padding: 0;
     }
 
     .searchbar {

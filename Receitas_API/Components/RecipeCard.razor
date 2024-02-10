@@ -1,5 +1,5 @@
 ﻿@using Receitas_API.Models
-@using Receitas_API.Pages.Recipes
+@using Receitas_API.Pages.TastyRecipes
 
 <div class="recipe-card">
     <div class="recipe-card-body">
@@ -23,6 +23,11 @@
          <div class="recipe-icons">
             <article>
                 <i class="fas fa-user-friends"></i><span class="ml-2" style="font-size:small">@Recipe.num_servings</span>
+                @if (Recipe.cook_time_minutes is not null)
+                {
+                    <i class="fas fa-clock"></i>
+                    <span class="ml-2" style="font-size:small">@Recipe.cook_time_minutes</span>
+                }
             </article>
         </div>
 
@@ -64,11 +69,6 @@
     <DialogAnimationSettings Effect="@Effects" Duration=600></DialogAnimationSettings>
 </SfDialog>
 
-
-
-
-
-
 <style type="text/css" scoped>
     .card-options {
         display: flex;
@@ -93,10 +93,12 @@
     }
 
     .recipe-icons {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-        margin: 0.5rem 5px;
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: 5px;
+        /* margin: 0.5rem 5px; */
         text-align: center;
     }
 

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Receitas_API.Data;
 using Receitas_API.Models;
@@ -6,13 +7,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Pages
+namespace Receitas_API.Pages.SpoonacularRecipes
 {
-    public partial class Receitas
+    public partial class SpoonacularRecipes
     {
 
         protected SfSpinner SpinnerObj;
-
+        protected ILogger<App> logger {  get; set; }
         private CountriesCuisines.Root recipesTitles;
         private List<Recipes.MyArray> recipeDetails;
         private List<string> mainStepNames = new List<string>();
@@ -59,7 +60,8 @@ namespace Receitas_API.Pages
             }
             catch (System.Exception ex)
             {
-                throw;
+                logger.LogError(ex.Message);
+                return new List<Recipes.MyArray>();
             }
         }
 

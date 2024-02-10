@@ -1,4 +1,4 @@
-﻿@page "/receitas"
+﻿@page "/spoonacular-recipes"
 @using RestSharp;
 @using Newtonsoft.Json
 @using Receitas_API.Data
@@ -36,6 +36,22 @@
 }
 else
 {
+    <ul class="recipe-list">
+        @foreach (var recipesTitles in recipesTitles.results)
+        {
+        <div class="recipe-card">
+            <div class="recipe-card-body">
+                <div class="img-box">
+                    <img class="img-fluid img-thumbnail"
+                         src="@recipesTitles.image" alt="imagem da receita" />
+                </div>
+
+                <h6 class="recipe-card-name"><b>@recipesTitles.title</b></h6>
+            </div>
+        </div>
+        }
+    </ul>
+
     foreach (var recipesTitles in recipesTitles.results)
     {
         recipeId = recipesTitles.id;
@@ -43,6 +59,7 @@ else
         t.Wait();
 
         recipeDetails = t.Result;
+
 
         <div class="control-section">
             <div class="row">
@@ -59,7 +76,8 @@ else
                 </div>
                 <div class="col-xl-9 col-md-12 col-sm-12 my-2 content">
 
-                    <p class="h6 font-weight-bold">Ingredients and Preparation
+                    <p class="h6 font-weight-bold">
+                        Ingredients and Preparation
                         <span><img src="images/icons8-ingredients-64.png" width="32" height="32" />&nbsp;<img src="images/icons8-frying-pan-80.png" width="32" height="32" /></span><span></span>
                     </p>
 
@@ -139,8 +157,8 @@ else
     }
 
     /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                stroke: green;
-            }*/
+                        stroke: green;
+                    }*/
 
     .e-card > .e-card-image {
         background-repeat: no-repeat;
@@ -150,18 +168,18 @@ else
         min-width: 350px;
     }
     /* .row {
-                        width: 80%;
-                        margin: auto;
-                    }*/
+                                width: 80%;
+                                margin: auto;
+                            }*/
 
     .e-btn {
         margin-left: 4px;
     }
 
     /*    .e-card .e-card-content {
-                        padding-top: 0px;
-                        font-size:medium;
-                }    */
+                                padding-top: 0px;
+                                font-size:medium;
+                        }    */
 
 
     .header-area .top-header-area .top-social-info a {
@@ -278,5 +296,52 @@ else
                 right: 10px;
                 bottom: 10px;
             }
+
+    .card-options {
+        display: flex;
+        position: relative;
+        justify-content: space-around;
+        align-items: center;
+        gap: 6px;
+        padding: 3px;
+        right: auto;
+        bottom: 0;
+    }
+
+    .e-chip .e-chip-text {
+        font-size: 0.7rem;
+        color: black;
+        font-weight: normal;
+    }
+
+    .e-chip-list .e-chip.e-outline {
+        border-color: #e513135b;
+        border-width: 3px;
+    }
+
+    .recipe-icons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: 5px;
+        /* margin: 0.5rem 5px; */
+        text-align: center;
+    }
+
+        .recipe-icons i {
+            font-size: 1.5rem;
+            /* color:  var(--primary-500); */
+        }
+
+        .recipe-icons h5,
+        .recipe-icons p {
+            margin-bottom: 0;
+            font-size: 0.85em;
+        }
+
+        .recipe-icons p {
+            color: var(--grey-600);
+
 </style>
 

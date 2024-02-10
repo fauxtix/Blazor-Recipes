@@ -37,7 +37,8 @@ namespace Receitas_API.Data
         public async Task<RecipeTags> GetRecipesTags()
         {
             string requestUri = "https://tasty.p.rapidapi.com/tags/list";
-            return await SendRequest<RecipeTags>(HttpMethod.Get, requestUri);
+            var result = await SendRequest<RecipeTags>(HttpMethod.Get, requestUri);
+            return result;
         }
 
         public async Task<string> Translate(string sourcetext)
@@ -71,8 +72,12 @@ namespace Receitas_API.Data
             }
             catch (Exception ex)
             {
+                if(ex.Message.ToLower().Contains("many"))
+                {
+                    var x  = true;
+                }
                 _logger.LogError(ex.Message);
-                throw; // Rethrow the exception for handling at a higher level if necessary
+                return default(T);
             }
         }
     }
