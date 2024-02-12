@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Receitas_API.Models;
 using Syncfusion.Blazor.Popups;
 
-namespace Receitas_API.Components
+namespace Receitas_API.Pages.TastyRecipes
 {
-    public partial class RecipeCard
+    public partial class TastyRecipeCard
     {
         [Parameter, EditorRequired] public Result Recipe { get; set; } = default!;
         [Parameter] public EventCallback<Result> OnSelectedRecipe { get; set; }

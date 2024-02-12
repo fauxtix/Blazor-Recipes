@@ -65,7 +65,7 @@ else
         @foreach (var item in recipesList.results)
         {
             <li class="recipe-list-item">
-                <RecipeCard Recipe="item" OnSelectedRecipe="HandleSelectedRecipe" />
+                <TastyRecipeCard Recipe="item" OnSelectedRecipe="HandleSelectedRecipe" />
             </li>
         }
     </ul>

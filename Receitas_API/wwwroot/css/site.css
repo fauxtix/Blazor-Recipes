@@ -268,9 +268,9 @@ app {
     }
 
     .recipe-card-name {
-        /*font-size: 1.2em;
-        font-weight: bold;*/
-        /*margin-bottom: 10px;*/
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -351,6 +351,24 @@ app {
             background-color: #26343f;
         }
 
+    e-btn {
+        padding: 6px 25px;
+        font-family: Playfair Display;
+        color: white;
+        background-color: #435869;
+        border-radius: 2px;
+        border: 0;
+    }
+
+        e-btn:hover {
+            background-color: #334452;
+        }
+
+        e-btn:active {
+            background-color: #26343f;
+        }
+
+
     .review-editor {
         margin-bottom: 10px;
     }
@@ -375,6 +393,29 @@ app {
         font-family: 'Playfair Display', serif;
         color: white;
     }
+
+    .card-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 6px;
+        padding: 3px;
+        right: auto;
+    }
+
+    .recipe-icons {
+        font-size: smaller;
+        padding: 2px;
+        padding: 3px;
+        right: auto;
+    }
+
+        .recipe-icons h5,
+        .recipe-icons p {
+            margin-bottom: 0;
+            font-size: 0.85em;
+        }
+
 
     #blazor-error-ui {
         background: lightyellow;

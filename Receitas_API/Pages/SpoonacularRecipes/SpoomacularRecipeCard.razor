@@ -1,0 +1,46 @@
+﻿@using Receitas_API.Data
+@using static Receitas_API.Pages.SpoonacularRecipes.SpoonacularRecipes
+@using Microsoft.Extensions.Logging;
+@using Microsoft.JSInterop;
+@using Receitas_API.Models;
+@using Syncfusion.Blazor.Spinner;
+@using System.Collections.Generic;
+@using System.Net.Http;
+@using System.Threading.Tasks;
+
+<div class="container">
+    <div class="recipe-card">
+        <div class="recipe-card-body">
+            <div class="img-box">
+                <img class="img-fluid img-thumbnail"
+                     src="@SpoonacularRecipe.image" alt="imagem da receita" />
+            </div>
+            <h6 class="recipe-card-name"><b>@SpoonacularRecipe.title</b></h6>
+            <div class="container-fluid ml-1 mr-1">
+
+                <div class="recipe-icons">
+                    <SfChip>
+                        <ChipItems>
+                            <ChipItem class="e-outline" LeadingIconCss="fas fa-clock" Text="@RecipeInformation.readyInMinutes.ToString()"></ChipItem>
+                            <ChipItem class="e-outline" LeadingIconCss="fas fa-user-friends" Text="@RecipeInformation.servings.ToString()"></ChipItem>
+                            <ChipItem class="e-outline" LeadingIconCss="fas fa-smile" Text="@RecipeInformation.healthScore.ToString()"></ChipItem>
+                            <ChipItem class="e-outline" LeadingIconCss="fas fa-thumbs-up" Text="@RecipeInformation.aggregateLikes.ToString()"></ChipItem>
+                        </ChipItems>
+                    </SfChip>
+                </div>
+            </div>
+            <hr class="separator"/>
+            <div class="d-flex justify-content-center align-items-center">
+                <p><SfButton IconCss="fa fa-eye" CssClass="e-primary" Content="View detail" @onclick="ShowDetail" /></p>
+            </div>
+            <hr />
+        </div>
+    </div>
+</div>
+
+<style>
+    .separator{
+        width:90%;
+        border-block: 2px solid;
+    }
+</style>

@@ -37,106 +37,85 @@
 else
 {
     <ul class="recipe-list">
-        @foreach (var recipesTitles in recipesTitles.results)
+        @foreach (var recipesTitle in recipesTitles.results)
         {
-        <div class="recipe-card">
-            <div class="recipe-card-body">
-                <div class="img-box">
-                    <img class="img-fluid img-thumbnail"
-                         src="@recipesTitles.image" alt="imagem da receita" />
-                </div>
-
-                <h6 class="recipe-card-name"><b>@recipesTitles.title</b></h6>
-            </div>
-        </div>
+            <li class="recipe-list-item">
+                <SpoomacularRecipeCard SpoonacularRecipe="recipesTitle" OnSelectedRecipe="HandleSelectedRecipe" />
+            </li>
         }
     </ul>
 
-    foreach (var recipesTitles in recipesTitles.results)
-    {
-        recipeId = recipesTitles.id;
-        var t = Task.Run(() => GetRecipeDetails(recipeId));
-        t.Wait();
+    <SfDialog Width="60%"
+              Height="86%"
+              MinHeight="86%"
+              IsModal="true"
+              ShowCloseIcon="false"
+              EnableResize="true"
+              AllowDragging="true"
+              @bind-Visible="RecipeDetailVisibility">
+        <DialogTemplates>
+            <Header>
+                <h4 class="recipe-card-name">@RecipeDetail.title</h4>
+            </Header>
+            <Content>
+                <div class="recipe-card">
+                    <div class="recipe-card-body">
+                        <img src="@RecipeDetail.image" />
+                        @{
+                            var t = Task.Run(() => GetRecipeDetails(RecipeDetail.id));
+                            t.Wait();
 
-        recipeDetails = t.Result;
-
-
-        <div class="control-section">
-            <div class="row">
-                <div class="col-xl-3 col-md-12 col-sm-12 content">
-                    <a class="d-block mb-4 h-100">
-                        <div class="img-box">
-                            <img class="img-fluid img-thumbnail"
-                                 src="@recipesTitles.image" alt="Recipe image" />
-                        </div>
-                        <p class="h5 font-weight-bold">
-                            @recipesTitles.title
-                        </p>
-                    </a>
-                </div>
-                <div class="col-xl-9 col-md-12 col-sm-12 my-2 content">
-
-                    <p class="h6 font-weight-bold">
-                        Ingredients and Preparation
-                        <span><img src="images/icons8-ingredients-64.png" width="32" height="32" />&nbsp;<img src="images/icons8-frying-pan-80.png" width="32" height="32" /></span><span></span>
-                    </p>
-
-                    @foreach (var mainSteps in recipeDetails)
-                    {
-                        mainStepsDetails = mainSteps.steps.ToList();
-                        foreach (var detail in mainStepsDetails)
-                        {
-                            string ingredients = "";
-                            foreach (var ingredient in detail.ingredients)
-                            {
-                                ingredients += ingredient.name + ", ";
-                            }
-                            if (!string.IsNullOrEmpty(ingredients))
-                            {
-                                ingredients = ingredients.Substring(0, ingredients.Length - 2);
-                            }
-                            <SfCard ID="DetailCard" CssClass="my-2">
-                                @if (!string.IsNullOrEmpty(ingredients))
-                                {
-                                    <CardContent>
-                                        <ChildContent>
-                                            <div class="text-body font-weight-bold">&nbsp;@ingredients</div>
-                                        </ChildContent>
-                                    </CardContent>
-                                }
-                                <CardContent EnableSeparator="true" Content="@detail.step"></CardContent>
-                            </SfCard>
+                            recipeDetails = t.Result;
                         }
-                    }
-                    <div class="d-flex justify-content-end my-2">
-                        <SfButton class="oi oi-arrow-circle-top p-2 e-primary" @onclick="GoTop">&nbsp;&nbsp;Go top</SfButton>
+
+                        <div class="content">
+                            <div class="detail-title"><h6>Ingredients and Preparation</h6></div>
+                            @foreach (var mainSteps in recipeDetails)
+                            {
+                                mainStepsDetails = mainSteps.steps.ToList();
+                                foreach (var detail in mainStepsDetails)
+                                {
+                                    string ingredients = "";
+                                    foreach (var ingredient in detail.ingredients)
+                                    {
+                                        ingredients += ingredient.name + ", ";
+                                    }
+                                    if (!string.IsNullOrEmpty(ingredients))
+                                    {
+                                        ingredients = ingredients.Substring(0, ingredients.Length - 2);
+                                        <div class="ingredient">@ingredients</div>
+                                    }
+                                    <div>@detail.step"</div>
+                                }
+                            }
+                        </div>
                     </div>
+                    <hr />
                 </div>
-            </div>
-            <hr />
-        </div>
-    }
+
+            </Content>
+            <FooterTemplate>
+                <div>
+                    <SfButton CssClass="e-outline e-round-corner"
+                              IconCss="fas fa-times"
+                              @onclick="(()=>RecipeDetailVisibility = false)" Content="Voltar">
+                    </SfButton>
+                </div>
+            </FooterTemplate>
+        </DialogTemplates>
+    </SfDialog>
+
+
+
 }
-<div class="col-12 col-sm-6">
-    <div class="top-social-info text-right">
-        <a href="#"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-dribbble" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-behance" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-    </div>
-</div>
-
-
 
 
 <style>
-    body {
-        font-size: medium;
-        font-family: Impact, 'Lucida Handwriting', sans-serif;
-    }
-
+    /*     body {
+                                            font-size: medium;
+                                            font-family: Impact, 'Lucida Handwriting', sans-serif;
+                                        }
+                                     */
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -157,8 +136,8 @@ else
     }
 
     /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                        stroke: green;
-                    }*/
+                                                            stroke: green;
+                                                        }*/
 
     .e-card > .e-card-image {
         background-repeat: no-repeat;
@@ -168,18 +147,18 @@ else
         min-width: 350px;
     }
     /* .row {
-                                width: 80%;
-                                margin: auto;
-                            }*/
+                                                                    width: 80%;
+                                                                    margin: auto;
+                                                                }*/
 
     .e-btn {
         margin-left: 4px;
     }
 
     /*    .e-card .e-card-content {
-                                padding-top: 0px;
-                                font-size:medium;
-                        }    */
+                                                                    padding-top: 0px;
+                                                                    font-size:medium;
+                                                            }    */
 
 
     .header-area .top-header-area .top-social-info a {
@@ -237,8 +216,17 @@ else
         font-family: 'Merriweather', serif;
         font-size: 17px;
         color: #6c767a;
-        line-height: 1.9;
+        line-height: 1.4;
     }
+
+        .content .ingredient {
+            color:steelblue;
+            font-size:1.2rem;
+            font-weight:bold;
+            margin-top:6px;
+            margin-bottom: 6px;
+            border-block: 2px solid #D3D3D3;
+        }
 
     /*-- Images Hover Effects CSS --*/
     .img-box {
@@ -297,17 +285,6 @@ else
                 bottom: 10px;
             }
 
-    .card-options {
-        display: flex;
-        position: relative;
-        justify-content: space-around;
-        align-items: center;
-        gap: 6px;
-        padding: 3px;
-        right: auto;
-        bottom: 0;
-    }
-
     .e-chip .e-chip-text {
         font-size: 0.7rem;
         color: black;
@@ -341,7 +318,14 @@ else
         }
 
         .recipe-icons p {
-            color: var(--grey-600);
+            color: lightpink;
+        }
+
+    .detail-title {
+        font-family: 'Merriweather', serif;
+        text-align:center;
+        border-style:groove;
+    }
 
 </style>
 

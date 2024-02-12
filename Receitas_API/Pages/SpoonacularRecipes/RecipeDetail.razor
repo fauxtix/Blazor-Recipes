@@ -1,0 +1,100 @@
+﻿@using Microsoft.Extensions.Logging
+@using Receitas_API.Data
+@using Receitas_API.Models
+
+
+<div class="control-section">
+    <div class="row">
+        <div class="col-xl-3 col-md-12 col-sm-12 content">
+            <a class="d-block mb-4 h-100">
+                <div class="img-box">
+                    <img class="img-fluid img-thumbnail"
+                         src="@Recipe.image" alt="Recipe image" />
+                </div>
+                <p class="h5 font-weight-bold">
+                    @Recipe.title
+                </p>
+            </a>
+        </div>
+        <div class="col-xl-9 col-md-12 col-sm-12 my-2 content">
+
+            <p class="h6 font-weight-bold">
+                Ingredients and Preparation
+                <span><img src="images/icons8-ingredients-64.png" width="32" height="32" />&nbsp;<img src="images/icons8-frying-pan-80.png" width="32" height="32" /></span><span></span>
+            </p>
+
+            @foreach (var mainSteps in recipeDetails)
+            {
+                mainStepsDetails = mainSteps.steps.ToList();
+                foreach (var detail in mainStepsDetails)
+                {
+                    string ingredients = "";
+                    foreach (var ingredient in detail.ingredients)
+                    {
+                        ingredients += ingredient.name + ", ";
+                    }
+                    if (!string.IsNullOrEmpty(ingredients))
+                    {
+                        ingredients = ingredients.Substring(0, ingredients.Length - 2);
+                    }
+                    <SfCard ID="DetailCard" CssClass="my-2">
+                        @if (!string.IsNullOrEmpty(ingredients))
+                        {
+                            <CardContent>
+                                <ChildContent>
+                                    <div class="text-body font-weight-bold">&nbsp;@ingredients</div>
+                                </ChildContent>
+                            </CardContent>
+                        }
+                        <CardContent EnableSeparator="true" Content="@detail.step"></CardContent>
+                    </SfCard>
+                }
+            }
+            <div class="d-flex justify-content-end my-2">
+                <SfButton class="e-btn oi-arrow-circle-top p-2 e-primary" >&nbsp;&nbsp;Voltar</SfButton>
+            </div>
+        </div>
+    </div>
+    <hr />
+</div>
+
+@code {
+    [Parameter] public CountriesCuisines.Result Recipe { get; set; }
+
+    private List<Recipes.MyArray> recipeDetails;
+    private List<Recipes.Step> mainStepsDetails = new List<Recipes.Step>();
+
+    private int recipeId;
+
+    private readonly HttpClient httpClient = new HttpClient();
+    private readonly string apiKey = "871cc9ddc1ea4733830dd2c30e3d691a";
+    protected ILogger<App> logger { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        recipeId = Recipe.id;
+        recipeDetails = await GetRecipeDetails(recipeId);
+    }
+
+    protected async Task<List<Recipes.MyArray>> GetRecipeDetails(int Id)
+    {
+        string baseUrl = $"https://api.spoonacular.com/recipes/{Id}/analyzedInstructions";
+        string url = $"{baseUrl}?apiKey={apiKey}";
+
+        try
+        {
+            var response = await httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadAsAsync<List<Recipes.MyArray>>();
+
+            return result;
+        }
+        catch (System.Exception ex)
+        {
+            logger.LogError(ex.Message);
+            return new List<Recipes.MyArray>();
+        }
+    }
+
+}

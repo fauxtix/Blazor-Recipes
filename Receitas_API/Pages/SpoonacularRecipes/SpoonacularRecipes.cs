@@ -16,6 +16,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
         protected ILogger<App> logger {  get; set; }
         private CountriesCuisines.Root recipesTitles;
         private List<Recipes.MyArray> recipeDetails;
+        private CountriesCuisines.Result RecipeDetail;
         private List<string> mainStepNames = new List<string>();
         private List<Recipes.Step> mainStepsDetails = new List<Recipes.Step>();
         private int recipeId;
@@ -24,6 +25,9 @@ namespace Receitas_API.Pages.SpoonacularRecipes
 
         private readonly HttpClient httpClient = new HttpClient();
         private readonly string apiKey = "871cc9ddc1ea4733830dd2c30e3d691a";
+
+        protected bool RecipeDetailVisibility { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             recipesTitles = await GetRecipeTitles();
@@ -117,58 +121,11 @@ namespace Receitas_API.Pages.SpoonacularRecipes
             StateHasChanged();
         }
 
-
-        public class Recipes
+                protected void HandleSelectedRecipe(CountriesCuisines.Result recipe)
         {
-            public class Ingredient
-            {
-                public int id { get; set; }
-                public string name { get; set; }
-                public string localizedName { get; set; }
-                public string image { get; set; }
-            }
-
-            public class Temperature
-            {
-                public double number { get; set; }
-                public string unit { get; set; }
-            }
-
-            public class Equipment
-            {
-                public int id { get; set; }
-                public string name { get; set; }
-                public string localizedName { get; set; }
-                public string image { get; set; }
-                public Temperature temperature { get; set; }
-            }
-
-            public class Length
-            {
-                public int number { get; set; }
-                public string unit { get; set; }
-            }
-
-            public class Step
-            {
-                public int number { get; set; }
-                public string step { get; set; }
-                public List<Ingredient> ingredients { get; set; }
-                public List<Equipment> equipment { get; set; }
-                public Length length { get; set; }
-            }
-
-            public class MyArray
-            {
-                public string name { get; set; }
-                public List<Step> steps { get; set; }
-            }
-
-            public class BrasilianRecipe
-            {
-                public List<MyArray> MyArray { get; set; }
-            }
-
+            RecipeDetailVisibility = true;
+            RecipeDetail = recipe;
         }
+
     }
 }
