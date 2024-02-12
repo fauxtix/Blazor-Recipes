@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Receitas_API.Data;
+using Receitas_API.Data.BrasilianRecipesService;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Popups;
 
@@ -30,6 +31,7 @@ namespace Receitas_API
 
             services.AddSingleton<IBrasilianRecipes_Dapper, BrasilianRecipes_Dapper>();
             services.AddScoped<ITastyApiRecipesService, TastyApiRecipesService>();
+            services.AddScoped<IRecipeService, RecipeService>(); // brasilian recipes II
 
             services.AddSyncfusionBlazor();
         }

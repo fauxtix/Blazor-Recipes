@@ -13,7 +13,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
     {
 
         protected SfSpinner SpinnerObj;
-        protected ILogger<App> logger {  get; set; }
+        protected ILogger<App> logger { get; set; }
         private CountriesCuisines.Root recipesTitles;
         private List<Recipes.MyArray> recipeDetails;
         private CountriesCuisines.Result RecipeDetail;
@@ -58,7 +58,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
             {
                 var response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
-                var result =  await response.Content.ReadAsAsync<List<Recipes.MyArray>>();
+                var result = await response.Content.ReadAsAsync<List<Recipes.MyArray>>();
 
                 return result;
             }
@@ -121,7 +121,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
             StateHasChanged();
         }
 
-                protected void HandleSelectedRecipe(CountriesCuisines.Result recipe)
+        protected void HandleSelectedRecipe(CountriesCuisines.Result recipe)
         {
             RecipeDetailVisibility = true;
             RecipeDetail = recipe;
