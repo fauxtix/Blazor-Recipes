@@ -17,9 +17,12 @@
 </SfSpinner>
 <h3>Spoonacular recipes</h3>
 <hr />
-<div class="container-fluid">
-    <div class="dropdown-menu-md-left w-25">
-        <p class="h6">Choose country/region</p><span class="showing"></span>
+
+<div class="row">
+    <div class="col-sm-6 col-md-12">
+        <label>Choose country/region</label>
+    </div>
+    <div class="col-lg-6 col-md-12">
         <SfDropDownList PopupWidth="250px" PopupHeight="450px" @bind-Value="@RegionName" AllowFiltering="true"
                         CssClass="custom-class e-corner"
                         FilterBarPlaceholder="Filter" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
@@ -60,7 +63,9 @@ else
             <Content>
                 <div class="recipe-card">
                     <div class="recipe-card-body">
-                        <img src="@RecipeDetail.image" />
+                        <div class="img-box">
+                            <img src="@RecipeDetail.image" />
+                        </div>
                         @{
                             var t = Task.Run(() => GetRecipeDetails(RecipeDetail.id));
                             t.Wait();
@@ -112,10 +117,10 @@ else
 
 <style>
     /*     body {
-                                            font-size: medium;
-                                            font-family: Impact, 'Lucida Handwriting', sans-serif;
-                                        }
-                                     */
+                                                                    font-size: medium;
+                                                                    font-family: Impact, 'Lucida Handwriting', sans-serif;
+                                                                }
+                                                             */
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -136,8 +141,8 @@ else
     }
 
     /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                                                            stroke: green;
-                                                        }*/
+                                                                                    stroke: green;
+                                                                                }*/
 
     .e-card > .e-card-image {
         background-repeat: no-repeat;
@@ -147,18 +152,18 @@ else
         min-width: 350px;
     }
     /* .row {
-                                                                    width: 80%;
-                                                                    margin: auto;
-                                                                }*/
+                                                                                            width: 80%;
+                                                                                            margin: auto;
+                                                                                        }*/
 
     .e-btn {
         margin-left: 4px;
     }
 
     /*    .e-card .e-card-content {
-                                                                    padding-top: 0px;
-                                                                    font-size:medium;
-                                                            }    */
+                                                                                            padding-top: 0px;
+                                                                                            font-size:medium;
+                                                                                    }    */
 
 
     .header-area .top-header-area .top-social-info a {
@@ -220,10 +225,10 @@ else
     }
 
         .content .ingredient {
-            color:steelblue;
-            font-size:1.2rem;
-            font-weight:bold;
-            margin-top:6px;
+            color: steelblue;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 6px;
             margin-bottom: 6px;
             border-block: 2px solid #D3D3D3;
         }
@@ -323,8 +328,8 @@ else
 
     .detail-title {
         font-family: 'Merriweather', serif;
-        text-align:center;
-        border-style:groove;
+        text-align: center;
+        border-style: groove;
     }
 
 </style>

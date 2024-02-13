@@ -104,7 +104,7 @@ else
                             <GridColumn Field=@nameof(RecipeDbModel.Recipe.Description) HeaderText="Recipe Name"
                                     Width="350"></GridColumn>
 
-                            <GridColumn HeaderText="" AllowFiltering="false" AllowSorting="false" Width="100">
+                            <GridColumn HeaderText="" AllowFiltering="false" AllowSorting="false" Width="150">
                                 <GridCommandColumns>
                                     <GridCommandColumn Type=CommandButtonType.Edit
                                                        ButtonOption="@(new CommandButtonOptions()
@@ -149,7 +149,7 @@ else
                         OnConfirmationNo="@(()=>DeleteRecordConfirmVisibility= false)" />
 
 <SfDialog 
-          Width="25%"
+          Width="30%"
           Height="auto"
           MinHeight="200px"
           IsModal="true"
@@ -169,7 +169,7 @@ else
                           @onclick="AddOrSaveRecord">
                     Save
                 </SfButton>
-                <SfButton CssClass="e-btn e-normal e-icon" IconCss="fa fa-times"
+                <SfButton CssClass="e-btn e-normal e-round-corner" IconCss="fa fa-times"
                           Type="submit" @onclick="Voltar">
                     Back
                 </SfButton>

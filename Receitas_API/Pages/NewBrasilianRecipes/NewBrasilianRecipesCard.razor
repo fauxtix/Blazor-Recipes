@@ -7,11 +7,13 @@
                      src="@Recipe.link_imagem" alt="imagem da receita" />
             </div>
             <h6 class="recipe-card-name"><b>@Recipe.receita</b></h6>
-            <div class="container-fluid ml-1 mr-1">
-
-                <div class="recipe-icons">
-                    @Recipe.tipo
-                </div>
+            <div class="recipe-icons">
+                <SfChip>
+                    <ChipItems>
+                        <ChipItem class="e-outline" LeadingIconCss="fas fa-calendar" Text="@Recipe.created_at.ToShortDateString()"></ChipItem>
+                        <ChipItem class="e-outline" LeadingIconCss="fas fa-table" Text="@Recipe.tipo"></ChipItem>
+                    </ChipItems>
+                </SfChip>
             </div>
             <hr class="separator" />
             <div class="d-flex justify-content-center align-items-center">

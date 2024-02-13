@@ -14,6 +14,7 @@
 else
 {
     <div class="container-fluid">
+        <PageTitleComponent PageTitle="Receitas do Brasil II" />
         <ul class="recipe-list">
             @foreach (var recipe in Recipes)
             {
@@ -48,7 +49,7 @@ else
     </div>
 
     <SfDialog Width="60%"
-              Height="86%"
+              Height="auto"
               MinHeight="86%"
               IsModal="true"
               ShowCloseIcon="false"
@@ -61,11 +62,12 @@ else
             </Header>
             <Content>
                 <div class="recipe-card">
-                    <div class="recipe-card-body">
+                    <div class="img-box">
                         <img src="@RecipeDetail.link_imagem" />
-
+                    </div>
+                    <div class="recipe-card-body">
                         <div class="content">
-                            <div class="detail-title"><h6>Ingredients and Preparation</h6></div>
+                            <div class="detail-title"><h6>Ingredientes e Preparação</h6></div>
                             <div class="ingredient">
                                 @{
                                     var ingredientes = RecipeDetail.ingredientes.Split(",");
@@ -110,10 +112,10 @@ else
 
 <style>
     /*     body {
-                                                    font-size: medium;
-                                                    font-family: Impact, 'Lucida Handwriting', sans-serif;
-                                                }
-                                             */
+                                                        font-size: medium;
+                                                        font-family: Impact, 'Lucida Handwriting', sans-serif;
+                                                    }
+                                                 */
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -134,8 +136,8 @@ else
     }
 
     /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                                                                    stroke: green;
-                                                                }*/
+                                                                        stroke: green;
+                                                                    }*/
 
     .e-card > .e-card-image {
         background-repeat: no-repeat;
@@ -145,18 +147,18 @@ else
         min-width: 350px;
     }
     /* .row {
-                                                                            width: 80%;
-                                                                            margin: auto;
-                                                                        }*/
+                                                                                width: 80%;
+                                                                                margin: auto;
+                                                                            }*/
 
     .e-btn {
         margin-left: 4px;
     }
 
     /*    .e-card .e-card-content {
-                                                                            padding-top: 0px;
-                                                                            font-size:medium;
-                                                                    }    */
+                                                                                padding-top: 0px;
+                                                                                font-size:medium;
+                                                                        }    */
 
 
     .header-area .top-header-area .top-social-info a {
