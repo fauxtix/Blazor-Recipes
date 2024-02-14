@@ -138,6 +138,11 @@ namespace Receitas_API.Pages.CodeBehind
             }
         }
 
+        public void RecordDoubleClickHandler(RecordDoubleClickEventArgs<RecipeDbModel.Recipe> args)
+        {
+            ShowDetailDialogVisibility = true;
+        }
+
         protected async Task Voltar()
         {
             ToastTitle = "Edição de Receita";

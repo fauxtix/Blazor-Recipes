@@ -23,29 +23,6 @@ else
                 </li>
             }
         </ul>
-        @*         @foreach (var recipe in Recipes)
-    {
-    <div>
-    <p>@recipe.receita </p>
-    <div class="img-box">
-    <img src="@recipe.link_imagem" />
-    </div>
-    <div>
-    @{
-    var ingredientes = recipe.ingredientes.Split(",");
-    }
-    @foreach (var item in ingredientes)
-    {
-    <p>@item</p>
-    }
-
-    </div>
-    <div>
-    <p>@recipe.modo_preparo</p>
-    </div>
-    </div>
-    }
-    *@
     </div>
 
     <SfDialog Width="60%"

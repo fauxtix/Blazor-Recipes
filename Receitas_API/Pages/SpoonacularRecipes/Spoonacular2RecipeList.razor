@@ -21,7 +21,9 @@
 @using Syncfusion.Blazor.Spinner
 @using Syncfusion.Blazor.RichTextEditor
 @using Receitas_API.Components
+
 @inject ILogger<App> logger;
+@inject IJSRuntime JS
 
 <a id="top_page"></a>
 <h3>Recipes V1</h3>
@@ -39,16 +41,19 @@
     <AlertMessage Message="Pesquisa não devolveu resultados." MessageType="Enums.AlertMessageType.Info"></AlertMessage>
 }
 
-@if (recipesTitles == null)
+@if (RegionsData == null)
 {
     <LoadingData spinnerMessage="@(string.IsNullOrEmpty(searchMessage)?$"Filtrando dados para região/país '{RegionName}'":searchMessage)" />
 }
 else
 {
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-3 dropdown-menu-md-left">
-                <p class="h6">Escolha região/país</p><span class="showing"></span>
+            <div class="col-sm-6 col-md-12">
+                <label>Choose country/region</label>
+            </div>
+            <div class="col-lg-6 col-md-12">
                 <SfDropDownList PopupWidth="250px" PopupHeight="450px" @bind-Value="@RegionName" AllowFiltering="true"
                                 CssClass="custom-class e-corner"
                                 FilterBarPlaceholder="Filtrar" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
@@ -56,24 +61,33 @@ else
                     <DropDownListEvents TItem="CuisineRegion" TValue="string" ValueChange="onChangeRegion"></DropDownListEvents>
                     <DropDownListFieldSettings Text="RegionName" Value="ID"></DropDownListFieldSettings>
                 </SfDropDownList>
-
-            </div>
-            <div class="col-3 mt-4 pull-left">
-                (<span class="font-weight-bold">@(recipesTitles.results.Count)</span>)
             </div>
         </div>
     </div>
     <hr />
+    }
+
+@if (recipesTitles == null)
+{
+    <LoadingData spinnerMessage="@(string.IsNullOrEmpty(searchMessage)?$"Filtrando dados para região/país '{RegionName}'":searchMessage)" />
+}
+else
+{
 
     foreach (var recipesTitles in recipesTitles.results)
     {
         var recipeId = recipesTitles.id; //.Where(p => p.title == RegionName).Select(o => o.id).FirstOrDefault();
         var t = Task.Run(() => GetRecipeInformation(recipeId));
         t.Wait();
-
         recipeInformation = t.Result; // GetRecipeInformation(recipeId).Result;
         var recipeInstructions = recipeInformation.instructions;
         var recipeSummary = recipeInformation.summary;
+        var servings = recipeInformation.servings.ToString();
+        var readyInMinutes = recipeInformation.readyInMinutes.ToString();
+        var aggregateLikes = recipeInformation.aggregateLikes.ToString();
+        var veryHealthy = recipeInformation.veryHealthy.ToString();
+        var dishTypes = recipeInformation.dishTypes;
+        var pricePerServing = recipeInformation.pricePerServing.ToString();
 
         <div class="control-section">
             <div class="row">
@@ -90,24 +104,58 @@ else
                         </CardContent>
 
                     </SfCard>
+
+                    <div class="recipe-icons">
+                        <SfChip>
+                            <ChipItems>
+                                <ChipItem class="e-outline" LeadingIconCss="fas fa-users" Text="@servings"></ChipItem>
+                                <ChipItem class="e-outline" LeadingIconCss="fas fa-clock" Text="@readyInMinutes"></ChipItem>
+                                <ChipItem class="e-outline" LeadingIconCss="fas fa-thumbs-up" Text="@aggregateLikes"></ChipItem>
+                                <ChipItem class="e-outline" LeadingIconCss="fas fa-dollar-sign" Text="@pricePerServing"></ChipItem>
+                            </ChipItems>
+                        </SfChip>
+                    </div>
+                    <div class="recipe-icons">
+                        <SfChip>
+                            <ChipItems>
+                                @foreach (var dishType in dishTypes)
+                                {
+                                    <ChipItem class="e-primary e-ouline" LeadingIconCss="fas fa-table" Text="@dishType"></ChipItem>
+                                }
+                            </ChipItems>
+                        </SfChip>
+                    </div>
                     <br />
-                    <a href="#top_page" class="oi oi-arrow-circle-top"> Go top</a>
+                    <SfButton Content=" Go Top" CssClass="e-btn e-primary e-outline e-round-corner" IconCss="oi oi-arrow-circle-top" @onclick="GoTop" />
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12 content">
                     <SfCard ID="DetailCard">
                         <CardHeader>
-                            <h5 class="h5">Instruções</h5>
+                            <div class="content">
+                                <div class="detail-title">Instructions</div>
+                            </div>
                         </CardHeader>
                         <CardContent>
                             <ChildContent>
-                                <div class="text-info">@recipeInstructions</div>
+                                <div class="content mt-0">
+                                    @if (recipeInstructions is not null)
+                                    {
+                                        @recipeInstructions
+                                    }
+                                    else
+                                    {
+                                        <div class="text-center">No data available</div>
+                                    }
+                                </div>
                             </ChildContent>
                         </CardContent>
                         <CardContent>
-                            <p class="h5">Sumário</p>
-                            <SfRichTextEditor>
-                                @recipeSummary
-                            </SfRichTextEditor>
+                            <div class="content">
+                                <div class="detail-title">Summary</div>
+                                <SfRichTextEditor EnableHtmlEncode="true" Readonly="true">
+                                    @recipeSummary
+                                </SfRichTextEditor>
+                            </div>
                         </CardContent>
                     </SfCard>
                 </div>
@@ -116,162 +164,8 @@ else
         </div>
     }
 }
-<div class="col-12 col-sm-6">
-    <div class="top-social-info text-right">
-        <a href="#"><i class="fab fa-pinterest" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-dribbble" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-behance" aria-hidden="true"></i></a>
-        <a href="#"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
-    </div>
-</div>
 
 
-
-@code {
-
-    protected SfSpinner SpinnerObj;
-
-    private CountriesCuisines.Root recipesTitles;
-    private RecipeInformation.RecipeInfo recipeInformation;
-    private string RegionName = "French";
-    private string spinnerTarget { get; set; } = "#spinnerContainer";
-
-    protected bool AlertVisibility { get; set; }
-    protected string searchMessage;
-
-    private readonly HttpClient httpClient = new HttpClient();
-
-
-    private readonly List<CuisineRegion> RegionsData = new List<CuisineRegion> {
-    new CuisineRegion() { ID= "German", RegionName = "Alemã" },
-    new CuisineRegion() { ID= "American", RegionName= "Americana" },
-    new CuisineRegion() { ID= "Latin American", RegionName = "América Latina" },
-    new CuisineRegion() { ID= "British", RegionName= "Britânica" },
-    new CuisineRegion() { ID= "Cajun", RegionName= "Cajun" },
-    new CuisineRegion() { ID= "Caribbean", RegionName= "Caraíbas" },
-    new CuisineRegion() { ID= "Korean", RegionName = "Coreana" },
-    new CuisineRegion() { ID= "Spanish", RegionName = "Espanhola"},
-    new CuisineRegion() { ID= "Eastern European", RegionName= "Europa de Leste" },
-    new CuisineRegion() { ID= "French", RegionName = "Francesa" },
-    new CuisineRegion() { ID= "Greek", RegionName = "Grega"},
-    new CuisineRegion() { ID= "Indian", RegionName = "Indiana" },
-    new CuisineRegion() { ID= "Irish", RegionName = "Irlandesa"},
-    new CuisineRegion() { ID= "Italian", RegionName = "Italiana" },
-    new CuisineRegion() { ID= "Japanese", RegionName = "Japonesa" },
-    new CuisineRegion() { ID= "Jewish", RegionName = "Judeia" },
-    new CuisineRegion() { ID= "Mediterranean", RegionName = "Mediterrânica" },
-    new CuisineRegion() { ID= "Mexican", RegionName = "Mexicana" },
-    new CuisineRegion() { ID= "Middle Eastern", RegionName = "Médio Oriente"},
-    new CuisineRegion() { ID= "Nordic", RegionName = "Nórdica" },
-    new CuisineRegion() { ID= "Southern", RegionName = "Sulista"},
-    new CuisineRegion() { ID= "Thai", RegionName = "Thai"},
-    new CuisineRegion() { ID= "Vietnamese", RegionName= "Vietnamita"}
-};
-
-    protected override async Task OnInitializedAsync()
-    {
-        AlertVisibility = false;
-        searchMessage = "";
-        await GetRecipeTitles();
-    }
-
-    private async Task GetRecipeTitles()
-    {
-        try
-        {
-            var response = await httpClient.GetFromJsonAsync<CountriesCuisines.Root>(
-                $"https://api.spoonacular.com/recipes/complexSearch?apiKey=871cc9ddc1ea4733830dd2c30e3d691a&cuisine={RegionName}");
-
-            if (response != null)
-            {
-                recipesTitles = response;
-            }
-            else
-            {
-                recipesTitles = null;
-            }
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex.Message);
-            recipesTitles = null;
-        }
-    }
-
-    private async Task<RecipeInformation.RecipeInfo> GetRecipeInformation(int id)
-    {
-        return await httpClient.GetFromJsonAsync<RecipeInformation.RecipeInfo>(
-            $"https://api.spoonacular.com/recipes/{id}/information?apiKey=871cc9ddc1ea4733830dd2c30e3d691a&includeNutrition=false");
-    }
-
-    private async void onChangeRegion(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, CuisineRegion> args)
-    {
-        recipesTitles = null;
-        RegionName = args.Value;
-        searchMessage = $"Filtrando dados para região/país '{args.ItemData.RegionName}'. Aguarde, p.f.";
-        await GetRecipeTitles();
-        AlertVisibility = recipesTitles == null;
-        StateHasChanged();
-    }
-
-    // private async Task GetRecipeTitles()
-    // {
-    //     try
-    //     {
-    //         var client = new RestClient();
-    //         var request = new RestRequest("https://api.spoonacular.com/recipes/complexSearch", Method.Get);
-    //         request.AddParameter("apiKey", "871cc9ddc1ea4733830dd2c30e3d691a");
-    //         request.AddParameter("cuisine", RegionName);
-    //         request.AddHeader("Accept", "application/json");
-    //         //request.AddHeader("content-type", "application/json");
-    //         var response = await client.GetAsync<CountriesCuisines.Root>(request);
-
-    //         if (response != null)
-    //         {
-    //             var recipeId = response.results.Select(o => o.id).FirstOrDefault();
-    //             recipeInformation = await GetRecipeInformation(recipeId);
-    //             recipesTitles = response;
-    //         }
-    //         else
-    //         {
-    //             recipesTitles = null;
-    //         }
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         logger.LogError(ex.Message);
-    //         recipesTitles = null;
-    //     }
-    // }
-
-    // private async Task<RecipeInformation.RecipeInfo> GetRecipeInformation(int Id)
-    // {
-    //     var client = new RestClient($"https://api.spoonacular.com/");
-    //     var request = new RestRequest($"recipes/{Id}/information?includeNutrition=false", Method.Get);
-    //     request.AddParameter("apiKey", "871cc9ddc1ea4733830dd2c30e3d691a");
-    //     request.AddHeader("Accept", "application/json");
-    //     var response = await client.GetAsync<RecipeInformation.RecipeInfo>(request);
-    //     return response;
-    // }
-
-    // private async void onChangeRegion(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, CuisineRegion> args)
-    // {
-    //     recipesTitles = null;
-    //     RegionName = args.Value;
-    //     searchMessage = $"Filtrando dados para região/país '{args.ItemData.RegionName}'. Aguarde, p.f.";
-    //     await GetRecipeTitles();
-    //     AlertVisibility = recipesTitles == null;
-    //     StateHasChanged();
-    // }
-
-    private class CuisineRegion
-    {
-        public string ID { get; set; }
-        public string RegionName { get; set; }
-    }
-}
 <style>
     body {
         font-size: medium;
@@ -298,9 +192,9 @@ else
     }
 
     /*    .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                stroke: green;
-            }
-        */
+                                                    stroke: green;
+                                                }
+                                            */
     .e-card > .e-card-image {
         background-repeat: no-repeat;
         width: 100%;
@@ -309,19 +203,19 @@ else
         min-width: 350px;
     }
     /* .row {
-                        width: 80%;
-                        margin: auto;
-                    }*/
+                                                            width: 80%;
+                                                            margin: auto;
+                                                        }*/
 
     .e-btn {
         margin-left: 4px;
     }
 
     /*    .e-card .e-card-content {
-                        padding-top: 0px;
-                        font-size:medium;
-                        }
-                */
+                                                            padding-top: 0px;
+                                                            font-size:medium;
+                                                            }
+                                                    */
 
 
     .header-area .top-header-area .top-social-info a {
@@ -377,13 +271,63 @@ else
         width: 90%;
         margin: 10px auto;
         font-family: 'Merriweather', serif;
-        font-size: 17px;
+        font-size: 15px;
         color: #6c767a;
-        line-height: 1.9;
+        line-height: 1.8;
     }
 
     .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
         stroke: green;
     }
+
+    .content {
+        width: 90%;
+        margin: 10px auto;
+        font-family: 'Merriweather', serif;
+        font-size: 15px;
+        color: #6c767a;
+        line-height: 1.4;
+    }
+
+        .content .ingredient {
+            color: steelblue;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 6px;
+            margin-bottom: 6px;
+            border-block: 2px solid #D3D3D3;
+        }
+
+    .detail-title {
+        font-family: 'Merriweather', serif;
+        text-align: center;
+        border-style: groove;
+    }
+
+    .recipe-icons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        /* grid-template-columns: repeat(3, 1fr); */
+        gap: 2px;
+        /* margin: 0.5rem 5px; */
+        text-align: center;
+    }
+
+        .recipe-icons i {
+            font-size: 1.5rem;
+            /* color:  var(--primary-500); */
+        }
+
+        .recipe-icons h5,
+        .recipe-icons p {
+            margin-bottom: 0;
+            font-size: 0.85em;
+        }
+
+        .recipe-icons p {
+            color: var(--grey-600);
+        }
+
 </style>
 
