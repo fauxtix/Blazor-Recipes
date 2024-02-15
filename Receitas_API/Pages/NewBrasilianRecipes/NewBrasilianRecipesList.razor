@@ -1,11 +1,11 @@
 ﻿@page "/NewRecipes"
 
-@using Receitas_API.Data.BrasilianRecipesService
 @using Receitas_API.Components
 @using Receitas_API.Models
 @using System.Text.RegularExpressions
+@using Receitas_API.Services.Interfaces
 
-@inject IRecipeService RecipeService
+
 
 @if (Recipes is null)
 {
@@ -88,11 +88,6 @@ else
 
 
 <style>
-    /*     body {
-                                                        font-size: medium;
-                                                        font-family: Impact, 'Lucida Handwriting', sans-serif;
-                                                    }
-                                                 */
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -102,20 +97,6 @@ else
         animation: spin 2s linear infinite;
     }
 
-    #SideCard .e-card .e-card-content {
-        height: 376px;
-        margin: 16px;
-        padding-top: 10px;
-    }
-
-    #DetailCard .e-card .e-card-content {
-        padding-top: 0px;
-    }
-
-    /*   .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                                                                        stroke: green;
-                                                                    }*/
-
     .e-card > .e-card-image {
         background-repeat: no-repeat;
         width: 100%;
@@ -123,19 +104,10 @@ else
         min-height: 350px;
         min-width: 350px;
     }
-    /* .row {
-                                                                                width: 80%;
-                                                                                margin: auto;
-                                                                            }*/
 
     .e-btn {
         margin-left: 4px;
     }
-
-    /*    .e-card .e-card-content {
-                                                                                padding-top: 0px;
-                                                                                font-size:medium;
-                                                                        }    */
 
 
     .header-area .top-header-area .top-social-info a {
@@ -145,45 +117,6 @@ else
         margin-right: 30px;
     }
 
-    #PageTop {
-        display: inline-block;
-        background-color: #FF9800;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        border-radius: 4px;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        transition: background-color .3s, opacity .5s, visibility .5s;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 1000;
-    }
-
-        #PageTop::after {
-            content: "\f077";
-            font-family: FontAwesome;
-            font-weight: normal;
-            font-style: normal;
-            font-size: 2em;
-            line-height: 50px;
-            color: #fff;
-        }
-
-        #PageTop:hover {
-            cursor: pointer;
-            background-color: #333;
-        }
-
-        #PageTop:active {
-            background-color: #555;
-        }
-
-        #PageTop.show {
-            opacity: 1;
-            visibility: visible;
-        }
 
     /* Styles for the content section */
 

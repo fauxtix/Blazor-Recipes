@@ -1,8 +1,9 @@
 ﻿using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using Receitas_API.Data;
 using Receitas_API.Models;
+using Receitas_API.Services.Interfaces;
+using Receitas_API.Services.Interfaces.DapperContext;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -11,22 +12,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data
+namespace Receitas_API.Services.Implementations
 {
     public class BrasilianRecipes_Dapper : IBrasilianRecipes_Dapper
     {
+        private readonly IDapperContext _context;
+
         private readonly SqlConnectionConfiguration _configuration;
         private readonly ILogger<BrasilianRecipes_Dapper> _logger;
-        public BrasilianRecipes_Dapper(SqlConnectionConfiguration configuration, ILogger<BrasilianRecipes_Dapper> logger)
+        public BrasilianRecipes_Dapper(ILogger<BrasilianRecipes_Dapper> logger, IDapperContext context)
         {
-            _configuration = configuration;
             _logger = logger;
+            _context = context;
         }
         public RecipeDbModel.Recipe GetRecipeById(int Id)
         {
             var p = new DynamicParameters();
             p.Add("RecipeID", Id, dbType: DbType.Int32);
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 var output = conn.Query<RecipeDbModel.Recipe>("usp_GetRecipe_ById", p, commandType: CommandType.StoredProcedure);
                 return output.SingleOrDefault();
@@ -37,7 +40,7 @@ namespace Receitas_API.Data
         {
             var p = new DynamicParameters();
             p.Add("RecipeID", Id, dbType: DbType.Int32);
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 var output = conn.Query<RecipeDbModel.Ingredient>("usp_GetIngredients_ByRecipeId", p, commandType: CommandType.StoredProcedure);
                 return output.ToList();
@@ -48,7 +51,7 @@ namespace Receitas_API.Data
         {
             var p = new DynamicParameters();
             p.Add("RecipeID", Id, dbType: DbType.Int32);
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 var output = conn.Query<RecipeDbModel.Preparation>("usp_GetPreparation_ByRecipeId", p, commandType: CommandType.StoredProcedure);
                 return output.ToList();
@@ -59,7 +62,7 @@ namespace Receitas_API.Data
         {
             var p = new DynamicParameters();
             p.Add("RecipeID", Id, dbType: DbType.Int32);
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 var output = conn.Query<RecipeDbModel.Other>("usp_GetOther_ByRecipeId", p, commandType: CommandType.StoredProcedure);
                 return output.ToList();
@@ -69,7 +72,7 @@ namespace Receitas_API.Data
         {
             try
             {
-                using (var conn = new SqlConnection(_configuration.Value))
+                using (var conn = _context.CreateConnection())
                 {
                     var results = await conn.QueryAsync<RecipeDbModel.Recipe>("usp_GetAllRecipes",
                         commandType: CommandType.StoredProcedure);
@@ -92,7 +95,7 @@ namespace Receitas_API.Data
             var p = new DynamicParameters();
             p.Add("Description", recipe.Description);
             p.Add("RecipeID", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 conn.Open();
                 try
@@ -116,7 +119,7 @@ namespace Receitas_API.Data
             p.Add("Description", recipe.Description);
             p.Add("Id", recipe.Id, dbType: DbType.Int32);
 
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 try
                 {
@@ -134,7 +137,7 @@ namespace Receitas_API.Data
             var p = new DynamicParameters();
             p.Add("Id", id, dbType: DbType.Int32);
 
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 if (conn.State == ConnectionState.Closed)
                     conn.Open();
@@ -178,7 +181,7 @@ namespace Receitas_API.Data
                 var p = new DynamicParameters();
                 p.Add("Description", recipe.Nome);
                 p.Add("RecipeID", dbType: DbType.Int32, direction: ParameterDirection.Output);
-                using (var conn = new SqlConnection(_configuration.Value))
+                using (var conn = _context.CreateConnection())
                 {
                     conn.Open();
                     var transaction = conn.BeginTransaction();
@@ -261,7 +264,7 @@ namespace Receitas_API.Data
                 sbUpdate.Append($"Preparation = '{sbPreparation.ToString()}', ");
                 sbUpdate.Append($"Other = '{sbOther.ToString()}' ");
                 sbUpdate.Append($"WHERE Id = {recipeID}");
-                using (var conn = new SqlConnection(_configuration.Value))
+                using (var conn = _context.CreateConnection())
                 {
                     conn.Open();
                     var transaction = conn.BeginTransaction();
@@ -282,7 +285,7 @@ namespace Receitas_API.Data
 
         public async Task<IEnumerable<BrasilianEqualNames>> GetEqualRecipesNames()
         {
-            using (var conn = new SqlConnection(_configuration.Value))
+            using (var conn = _context.CreateConnection())
             {
                 try
                 {

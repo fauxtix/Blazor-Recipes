@@ -1,18 +1,6 @@
-﻿@page "/recipelist"
+﻿@page "/spoonacular-I-recipes"
 
-@* @using Microsoft.Extensions.Logging
-@using RestSharp;
-@using Newtonsoft.Json
-@using Receitas_API.Data
-@using Receitas_API.Models
-@using Syncfusion.Blazor.Cards
-@using Syncfusion.Blazor.DropDowns
-@using Syncfusion.Blazor.Spinner;
-@using Syncfusion.Blazor.RichTextEditor
-@using Receitas_API.Components
- *@
-
- @using Microsoft.Extensions.Logging
+@using Microsoft.Extensions.Logging
 @using System.Net.Http.Json
 @using Receitas_API.Data
 @using Receitas_API.Models
@@ -26,9 +14,7 @@
 @inject IJSRuntime JS
 
 <a id="top_page"></a>
-<h3>Recipes V1</h3>
-
-<hr />
+<PageTitleComponent PageTitle="Spoonacular recipes I" />
 <div id="spinnerContainer"></div>
 <SfSpinner @ref="@SpinnerObj"
            Label="Processando..."
@@ -50,10 +36,10 @@ else
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-6 col-md-12">
+            <div class="col-sm-5 col-md-12">
                 <label>Choose country/region</label>
             </div>
-            <div class="col-lg-6 col-md-12">
+            <div class="col-lg-5 col-md-12">
                 <SfDropDownList PopupWidth="250px" PopupHeight="450px" @bind-Value="@RegionName" AllowFiltering="true"
                                 CssClass="custom-class e-corner"
                                 FilterBarPlaceholder="Filtrar" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
@@ -65,7 +51,7 @@ else
         </div>
     </div>
     <hr />
-    }
+}
 
 @if (recipesTitles == null)
 {
@@ -87,11 +73,14 @@ else
         var aggregateLikes = recipeInformation.aggregateLikes.ToString();
         var veryHealthy = recipeInformation.veryHealthy.ToString();
         var dishTypes = recipeInformation.dishTypes;
+        var cuisines = recipeInformation.cuisines;
+        var diets = recipeInformation.diets;
+
         var pricePerServing = recipeInformation.pricePerServing.ToString();
 
         <div class="control-section">
             <div class="row">
-                <div class="col-lg-6 col-md-12 col-sm-12 content">
+                <div class="col-lg-5 col-md-12 col-sm-12 content">
                     <SfCard ID="SideCard">
                         <CardImage Image="@recipesTitles.image" TitlePosition="TitlePositions.TopRight"
                                    Title="@recipesTitles.id.ToString()"></CardImage>
@@ -104,31 +93,54 @@ else
                         </CardContent>
 
                     </SfCard>
+                    <div class="container-fluid">
+                        <SfChip>
+                            <div class="recipe-icons">
+                                <ChipItems>
+                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-user-friends" Text="@servings"></ChipItem>
+                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-clock" Text="@readyInMinutes"></ChipItem>
+                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-thumbs-up" Text="@aggregateLikes"></ChipItem>
+                                </ChipItems>
+                            </div>
+                        </SfChip>
+                        <SfChip>
+                            <ChipItems>
+                                <div class="recipe-icons">
+                                    @foreach (var dishType in dishTypes)
+                                    {
+                                        <ChipItem class="e-success" LeadingIconCss="fas fa-table" Text="@dishType"></ChipItem>
+                                    }
+                                </div>
+                            </ChipItems>
+                        </SfChip>
+                        <SfChip>
+                            <ChipItems>
+                                <div class="recipe-icons">
+                                    @foreach (var cuisine in cuisines)
+                                    {
+                                        <ChipItem class="e-warning" LeadingIconCss="fas fa-table" Text="@cuisine"></ChipItem>
+                                    }
+                                </div>
+                            </ChipItems>
+                        </SfChip>
+                        <SfChip>
+                            <ChipItems>
+                                <div class="recipe-icons">
+                                    @foreach (var diet in diets)
+                                    {
+                                        <ChipItem class="e-info" LeadingIconCss="fas fa-table" Text="@diet"></ChipItem>
+                                    }
+                                </div>
+                            </ChipItems>
+                        </SfChip>
+                    </div>
 
-                    <div class="recipe-icons">
-                        <SfChip>
-                            <ChipItems>
-                                <ChipItem class="e-outline" LeadingIconCss="fas fa-users" Text="@servings"></ChipItem>
-                                <ChipItem class="e-outline" LeadingIconCss="fas fa-clock" Text="@readyInMinutes"></ChipItem>
-                                <ChipItem class="e-outline" LeadingIconCss="fas fa-thumbs-up" Text="@aggregateLikes"></ChipItem>
-                                <ChipItem class="e-outline" LeadingIconCss="fas fa-dollar-sign" Text="@pricePerServing"></ChipItem>
-                            </ChipItems>
-                        </SfChip>
+                    <hr />
+                    <div class="d-flex justify-content-center">
+                        <SfButton Content=" Go Top" CssClass="e-btn e-primary e-outline e-round-corner" IconCss="oi oi-arrow-circle-top" @onclick="GoTop" />
                     </div>
-                    <div class="recipe-icons">
-                        <SfChip>
-                            <ChipItems>
-                                @foreach (var dishType in dishTypes)
-                                {
-                                    <ChipItem class="e-primary e-ouline" LeadingIconCss="fas fa-table" Text="@dishType"></ChipItem>
-                                }
-                            </ChipItems>
-                        </SfChip>
-                    </div>
-                    <br />
-                    <SfButton Content=" Go Top" CssClass="e-btn e-primary e-outline e-round-corner" IconCss="oi oi-arrow-circle-top" @onclick="GoTop" />
                 </div>
-                <div class="col-lg-6 col-md-12 col-sm-12 content">
+                <div class="col-lg-7 col-md-12 col-sm-12 content">
                     <SfCard ID="DetailCard">
                         <CardHeader>
                             <div class="content">
@@ -167,11 +179,6 @@ else
 
 
 <style>
-    body {
-        font-size: medium;
-        font-family: Impact, 'Lucida Handwriting', sans-serif;
-    }
-
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -191,10 +198,6 @@ else
         padding-top: 0px;
     }
 
-    /*    .e-spinner-pane .e-spinner-inner .e-spin-bootstrap4 {
-                                                    stroke: green;
-                                                }
-                                            */
     .e-card > .e-card-image {
         background-repeat: no-repeat;
         width: 100%;
@@ -202,21 +205,10 @@ else
         min-height: 350px;
         min-width: 350px;
     }
-    /* .row {
-                                                            width: 80%;
-                                                            margin: auto;
-                                                        }*/
 
     .e-btn {
         margin-left: 4px;
     }
-
-    /*    .e-card .e-card-content {
-                                                            padding-top: 0px;
-                                                            font-size:medium;
-                                                            }
-                                                    */
-
 
     .header-area .top-header-area .top-social-info a {
         display: inline-block;
@@ -225,45 +217,31 @@ else
         margin-right: 30px;
     }
 
-    #PageTop {
-        display: inline-block;
-        background-color: #FF9800;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        border-radius: 4px;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        transition: background-color .3s, opacity .5s, visibility .5s;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 1000;
     }
 
-        #PageTop::after {
-            content: "\f077";
-            font-family: FontAwesome;
-            font-weight: normal;
-            font-style: normal;
-            font-size: 2em;
-            line-height: 50px;
-            color: #fff;
-        }
+    #PageTop::after {
+        content: "\f077";
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        font-size: 2em;
+        line-height: 50px;
+        color: #fff;
+    }
 
-        #PageTop:hover {
-            cursor: pointer;
-            background-color: #333;
-        }
+    #PageTop:hover {
+        cursor: pointer;
+        background-color: #333;
+    }
 
-        #PageTop:active {
-            background-color: #555;
-        }
+    #PageTop:active {
+        background-color: #555;
+    }
 
-        #PageTop.show {
-            opacity: 1;
-            visibility: visible;
-        }
+    #PageTop.show {
+        opacity: 1;
+        visibility: visible;
+    }
 
     /* Styles for the content section */
 
@@ -306,12 +284,12 @@ else
 
     .recipe-icons {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         /* grid-template-columns: repeat(3, 1fr); */
         gap: 2px;
         /* margin: 0.5rem 5px; */
-        text-align: center;
+        /* text-align: center; */
     }
 
         .recipe-icons i {
@@ -326,7 +304,7 @@ else
         }
 
         .recipe-icons p {
-            color: var(--grey-600);
+            color: grey;
         }
 
 </style>

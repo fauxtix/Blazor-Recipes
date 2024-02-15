@@ -6,12 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Context\PMContext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\images\recipes.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Blazored.Menu" Version="2.2.0" />
     <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.58" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="7.0.14" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
@@ -19,6 +24,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="RestSharp" Version="107.0.1" />
     <PackageReference Include="Syncfusion.Blazor" Version="20.2.0.36" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -30,6 +36,10 @@
     <Content Update="Data\afrodite.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Repositories\Contracts\" />
   </ItemGroup>
 
 </Project>

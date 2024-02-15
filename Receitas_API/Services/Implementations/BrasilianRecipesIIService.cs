@@ -1,22 +1,20 @@
-﻿using Azure.Core;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Receitas_API.Models;
-using Syncfusion.Blazor.Data;
+using Receitas_API.Services.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data.BrasilianRecipesService
+namespace Receitas_API.Services.Implementations
 {
-    public class RecipeService : IRecipeService
+    public class BrasilianRecipesIIService : IBrasilianRecipesIIService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<RecipeService> _logger;
+        private readonly ILogger<BrasilianRecipesIIService> _logger;
         private readonly string urlSite = "https://gold-anemone-wig.cyclic.app/receitas";
 
-        public RecipeService(HttpClient httpClient, ILogger<RecipeService> logger)
+        public BrasilianRecipesIIService(HttpClient httpClient, ILogger<BrasilianRecipesIIService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -44,7 +42,7 @@ namespace Receitas_API.Data.BrasilianRecipesService
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return default(BrasilianRecipe.Receita);
+                return default;
             }
         }
 
@@ -91,7 +89,7 @@ namespace Receitas_API.Data.BrasilianRecipesService
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return default(T);
+                return default;
             }
         }
 

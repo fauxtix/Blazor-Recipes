@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data
+namespace Receitas_API.Services.Interfaces
 {
     public interface IBrasilianRecipes_Dapper
     {
         Task CreateDbDataFromApi();
-        Task Update_RecipeTable();        
+        Task Update_RecipeTable();
 
         int Insert_Recipe(RecipeDbModel.Recipe recipe);
         void Update_Recipe(RecipeDbModel.Recipe recipe);

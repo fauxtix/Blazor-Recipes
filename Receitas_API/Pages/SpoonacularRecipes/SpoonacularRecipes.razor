@@ -1,4 +1,4 @@
-﻿@page "/spoonacular-recipes"
+﻿@page "/spoonacular-II-recipes"
 @using RestSharp;
 @using Newtonsoft.Json
 @using Receitas_API.Data
@@ -9,20 +9,19 @@
 @inject IJSRuntime JS
 
 <div id="spinnerContainer"></div>
-<div id="spinnerContainer"></div>
 <SfSpinner @ref="SpinnerObj"
            Label="Processando..."
            Type="@SpinnerType.Bootstrap4" Size="50"
            CssClass="e-spin-overlay">
 </SfSpinner>
-<h3>Spoonacular recipes</h3>
+<PageTitleComponent PageTitle="Spoonacular recipes II" />
 <hr />
 
 <div class="row">
-    <div class="col-sm-6 col-md-12">
+    <div class="col-sm-4 col-md-12">
         <label>Choose country/region</label>
     </div>
-    <div class="col-lg-6 col-md-12">
+    <div class="col-lg-4 col-md-12">
         <SfDropDownList PopupWidth="250px" PopupHeight="450px" @bind-Value="@RegionName" AllowFiltering="true"
                         CssClass="custom-class e-corner"
                         FilterBarPlaceholder="Filter" FilterType="Syncfusion.Blazor.DropDowns.FilterType.Contains"
@@ -116,11 +115,6 @@ else
 
 
 <style>
-    /*     body {
-                                                                    font-size: medium;
-                                                                    font-family: Impact, 'Lucida Handwriting', sans-serif;
-                                                                }
-                                                             */
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
         border-top: 16px solid #3498db; /* Blue */
@@ -151,20 +145,10 @@ else
         min-height: 350px;
         min-width: 350px;
     }
-    /* .row {
-                                                                                            width: 80%;
-                                                                                            margin: auto;
-                                                                                        }*/
 
     .e-btn {
         margin-left: 4px;
     }
-
-    /*    .e-card .e-card-content {
-                                                                                            padding-top: 0px;
-                                                                                            font-size:medium;
-                                                                                    }    */
-
 
     .header-area .top-header-area .top-social-info a {
         display: inline-block;
@@ -173,45 +157,6 @@ else
         margin-right: 30px;
     }
 
-    #PageTop {
-        display: inline-block;
-        background-color: #FF9800;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        border-radius: 4px;
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        transition: background-color .3s, opacity .5s, visibility .5s;
-        opacity: 0;
-        visibility: hidden;
-        z-index: 1000;
-    }
-
-        #PageTop::after {
-            content: "\f077";
-            font-family: FontAwesome;
-            font-weight: normal;
-            font-style: normal;
-            font-size: 2em;
-            line-height: 50px;
-            color: #fff;
-        }
-
-        #PageTop:hover {
-            cursor: pointer;
-            background-color: #333;
-        }
-
-        #PageTop:active {
-            background-color: #555;
-        }
-
-        #PageTop.show {
-            opacity: 1;
-            visibility: visible;
-        }
 
     /* Styles for the content section */
 

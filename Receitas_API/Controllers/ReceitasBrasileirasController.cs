@@ -7,15 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data
+namespace Receitas_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReceitasController : ControllerBase
+    public class ReceitasBrasileirasController : ControllerBase
     {
-        private List<Receita> receitas = new List<Receita>();
+        private List<Receita> receitas = new();
         private readonly IWebHostEnvironment _hostingEnvironment;
-        public ReceitasController(IWebHostEnvironment hostingEnvironment)
+        public ReceitasBrasileirasController(IWebHostEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
         }
@@ -31,7 +31,7 @@ namespace Receitas_API.Data
                 var output = JsonConvert.DeserializeObject<List<Receita>>(file).ToList();
                 return output;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw new ApplicationException($"Erro no controller:\r\n{ex.Message}");
             }

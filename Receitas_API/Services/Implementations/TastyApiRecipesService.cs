@@ -1,17 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Receitas_API.Models;
+using Receitas_API.Services.Interfaces;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data
+namespace Receitas_API.Services.Implementations
 {
-    public interface ITastyApiRecipesService
-    {
-        Task<TastyRoot> GetRecipes(string tag, int i, int option);
-        Task<RecipeTags> GetRecipesTags();
-        Task<string> Translate(string sourcetext);
-    }
 
     public class TastyApiRecipesService : ITastyApiRecipesService
     {
@@ -72,12 +67,12 @@ namespace Receitas_API.Data
             }
             catch (Exception ex)
             {
-                if(ex.Message.ToLower().Contains("many"))
-                {
-                    var x  = true;
-                }
+                //if (ex.Message.ToLower().Contains("many"))
+                //{
+                //    var x = true;
+                //}
                 _logger.LogError(ex.Message);
-                return default(T);
+                return default;
             }
         }
     }

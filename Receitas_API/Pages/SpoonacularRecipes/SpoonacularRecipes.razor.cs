@@ -19,7 +19,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
         private CountriesCuisines.Result RecipeDetail;
         private List<string> mainStepNames = new List<string>();
         private List<Recipes.Step> mainStepsDetails = new List<Recipes.Step>();
-        private int recipeId;
+        //private int recipeId;
         private string RegionName = "French";
         private string spinnerTarget { get; set; } = "#spinnerContainer";
 

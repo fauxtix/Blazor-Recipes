@@ -34,12 +34,12 @@
             </div>
         </BlazoredMenuItem>
         <BlazoredMenuItem Css="nav-item py-0 px-3">
-            <NavLink href="recipelist">
+            <NavLink href="spoonacular-I-recipes">
                 <i class="fa fa-book-open" aria-hidden="true" />&nbsp;&nbsp;Spoonacular Api (1)
             </NavLink>
         </BlazoredMenuItem>
         <BlazoredMenuItem Css="nav-item py-0 px-3">
-            <NavLink href="spoonacular-recipes">
+            <NavLink href="spoonacular-II-recipes">
                 <i class="fa fa-book-open" aria-hidden="true" />&nbsp;&nbsp;Spoonacular Api (2)
             </NavLink>
         </BlazoredMenuItem>
@@ -59,43 +59,12 @@
 
 @code {
 
-    [CascadingParameter]
-    protected Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    protected System.Security.Claims.ClaimsPrincipal CurrentUser;
-    protected int doctorId;
-    protected string urlStats;
     protected BlazoredMenu menuObj { get; set; }
-    protected BlazoredSubMenu subMenuObj { get; set; }
     [Inject] IJSRuntime js { get; set; }
 
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    // protected async override Task OnInitializedAsync()
-    // {
-    //     try
-    //     {
-
-    //        CurrentUser = (await authenticationStateTask).User;
-
-    //        var user = await _UserManager.FindByNameAsync(CurrentUser.Identity.Name);
-    //        if (user.IsDoctor)
-    //        {
-    //            doctorId = user.CodMedico;
-    //            urlStats = $"/doctors/stats/{doctorId}";
-    //            StateHasChanged();
-    //        }
-
-    //     }
-    //     catch
-    //     {
-    //        urlStats = $"/error";
-    //        StateHasChanged();
-
-    //     }
-    // }
 
     private void ToggleNavMenu()
     {

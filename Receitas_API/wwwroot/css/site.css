@@ -454,3 +454,169 @@ app {
         background-color: #ddd;
     }
 }
+@media only screen and (max-width: 400px) {
+    .group-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        height: auto;
+    }
+
+    .responsive-dialog-30.e-dialog {
+        width: 90%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .responsive-dialog-40.e-dialog {
+        width: 90%;
+        height: auto;
+    }
+
+    .responsive-dialog-50.e-dialog {
+        width: 90%;
+        height: auto;
+    }
+
+    .responsive-pdf-word-viewer.e-dialog {
+        width: 90%;
+        height: 85%;
+    }
+}
+
+@media only screen and (min-width: 451) and (max-width: 650) {
+    .group-box {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+    }
+
+    .responsive-dialog-30.e-dialog {
+        width: 80%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .responsive-dialog-40.e-dialog {
+        width: 90%;
+        height: auto;
+    }
+
+    .responsive-dialog-50.e-dialog {
+        width: 90%;
+        height: auto;
+    }
+
+    .responsive-pdf-word-viewer.e-dialog {
+        width: 80%;
+        height: 85%;
+    }
+}
+
+/* Medium devices (landscape tablets) */
+@media only screen and (min-width: 651) and (max-width: 950) {
+    .group-box {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+    }
+
+    .responsive-dialog-30.e-dialog {
+        width: 70%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .responsive-dialog-40.e-dialog {
+        width: 80%;
+        height: auto;
+    }
+
+    .responsive-dialog-50.e-dialog {
+        width: 90%;
+        height: auto;
+    }
+
+    .responsive-pdf-word-viewer.e-dialog {
+        width: 70%;
+        height: 85%;
+    }
+}
+
+/* Medium devices (landscape tablets) */
+@media only screen and (min-width: 951) and (max-width: 1200) {
+    .group-box {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        vertical-align: middle;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+    }
+
+    .responsive-dialog-30.e-dialog {
+        width: 50%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .responsive-dialog-40.e-dialog {
+        width: 60%;
+        height: auto;
+    }
+
+    .responsive-dialog-50.e-dialog {
+        width: 70%;
+        height: auto;
+    }
+
+    .responsive-pdf-word-viewer.e-dialog {
+        width: 70%;
+        height: 85%;
+    }
+}
+
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+
+@media only screen and (min-width: 1201px) {
+    .group-box {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        align-items: start;
+        vertical-align: middle;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    .responsive-dialog-30.e-dialog {
+        width: 30%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .responsive-dialog-40.e-dialog {
+        width: 40%;
+        height: auto;
+    }
+
+    .responsive-dialog-50.e-dialog {
+        width: 50%;
+        height: auto;
+    }
+
+    .responsive-pdf-word-viewer.e-dialog {
+        width: 70%;
+        height: 85%;
+    }
+}

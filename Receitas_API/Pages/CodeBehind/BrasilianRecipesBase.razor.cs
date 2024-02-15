@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using Receitas_API.Data;
 using RestSharp;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Notifications;
@@ -17,6 +16,7 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Hosting;
 using Receitas_API.Models;
+using Receitas_API.Services.Interfaces;
 
 namespace Receitas_API.Pages.CodeBehind
 {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Receitas_API.Data.BrasilianRecipesService
+namespace Receitas_API.Services.Interfaces
 {
-    public interface IRecipeService
+    public interface IBrasilianRecipesIIService
     {
         Task<IEnumerable<BrasilianRecipe.Receita>> GetAllRecipes();
         Task<BrasilianRecipe.Receita> GetById(int Id);

@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using Receitas_API.Data;
-using Receitas_API.Data.BrasilianRecipesService;
 using Receitas_API.Models;
-using Receitas_API.Pages.SpoonacularRecipes;
+using Receitas_API.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,11 +10,11 @@ namespace Receitas_API.Pages.NewBrasilianRecipes
 {
     public partial class NewBrasilianRecipesCard
     {
-        [Inject ] IRecipeService recipeService { get; set; }
+        [Inject ] IBrasilianRecipesIIService recipeService { get; set; }
         [Parameter] public BrasilianRecipe.Receita Recipe { get; set; }
         [Parameter] public EventCallback<BrasilianRecipe.Receita> OnSelectedRecipe { get; set; }
 
-        List<string> stepsList = new List<string>();
+        protected List<string> stepsList = new List<string>();
         protected int RecipeId { get; set; }
         protected ILogger<App> logger { get; set; }
 
@@ -35,6 +33,5 @@ namespace Receitas_API.Pages.NewBrasilianRecipes
         {
             OnSelectedRecipe.InvokeAsync(Recipe);
         }
-
     }
 }

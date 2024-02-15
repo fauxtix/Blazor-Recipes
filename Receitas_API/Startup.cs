@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Receitas_API.Context;
 using Receitas_API.Data;
-using Receitas_API.Data.BrasilianRecipesService;
+using Receitas_API.Services.Implementations;
+using Receitas_API.Services.Interfaces;
+using Receitas_API.Services.Interfaces.DapperContext;
 using Syncfusion.Blazor;
-using Syncfusion.Blazor.Popups;
 
 namespace Receitas_API
 {
@@ -29,9 +31,10 @@ namespace Receitas_API
             var sqlConnectionConfiguration = new SqlConnectionConfiguration(Configuration.GetConnectionString("RecipesConnection"));
             services.AddSingleton(sqlConnectionConfiguration);
 
-            services.AddSingleton<IBrasilianRecipes_Dapper, BrasilianRecipes_Dapper>();
+            services.AddTransient<IDapperContext, DapperContext>();
+            services.AddScoped<IBrasilianRecipes_Dapper, BrasilianRecipes_Dapper>();
             services.AddScoped<ITastyApiRecipesService, TastyApiRecipesService>();
-            services.AddScoped<IRecipeService, RecipeService>(); // brasilian recipes II
+            services.AddScoped<IBrasilianRecipesIIService, BrasilianRecipesIIService>(); // brasilian recipes II
 
             services.AddSyncfusionBlazor();
         }
