@@ -165,7 +165,7 @@ namespace Receitas_API.Pages.TastyRecipes
 
         private async void GoTop()
         {
-            await JS.InvokeVoidAsync("OnScrollEvent"); // OnScrollEvent
+            await JS.InvokeVoidAsync("OnScrollEvent");
         }
         public class TagItem
         {

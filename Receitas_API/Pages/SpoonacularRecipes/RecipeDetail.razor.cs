@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using Receitas_API.Data;
 using Receitas_API.Models;
 using System.Collections.Generic;
 using System.Net.Http;

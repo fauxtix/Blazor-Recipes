@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Receitas_API.Data
+namespace Receitas_API.Models
 {
     public class CountriesCuisines
     {
