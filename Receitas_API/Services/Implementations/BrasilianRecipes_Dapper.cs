@@ -17,8 +17,6 @@ namespace Receitas_API.Services.Implementations
     public class BrasilianRecipes_Dapper : IBrasilianRecipes_Dapper
     {
         private readonly IDapperContext _context;
-
-        private readonly SqlConnectionConfiguration _configuration;
         private readonly ILogger<BrasilianRecipes_Dapper> _logger;
         public BrasilianRecipes_Dapper(ILogger<BrasilianRecipes_Dapper> logger, IDapperContext context)
         {

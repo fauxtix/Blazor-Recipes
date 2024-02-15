@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Receitas_API.Pages.SpoonacularRecipes
 {
-    public partial class SpoomacularRecipeCard
+    public partial class SpoonacularRecipes_II_Card
     {
         [Parameter] public CountriesCuisines.Result SpoonacularRecipe { get; set; }
         [Parameter] public EventCallback<CountriesCuisines.Result> OnSelectedRecipe { get; set; }

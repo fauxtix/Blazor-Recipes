@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Receitas_API.Pages.SpoonacularRecipes
 {
-    public partial class SpoonacularRecipes
+    public partial class SpoonacularRecipes_II
     {
 
         protected SfSpinner SpinnerObj;

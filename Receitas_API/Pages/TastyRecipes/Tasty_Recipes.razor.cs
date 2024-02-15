@@ -23,7 +23,6 @@ namespace Receitas_API.Pages.TastyRecipes
 
         private string spinnerLabel { get; set; }
         private bool VisibleProperty { get; set; } = false;
-        private bool IsVideoAvailable { get; set; } = false;
 
         private int recipesCount = 0;
         protected SfSpinner SpinnerObj { get; set; }
@@ -38,8 +37,6 @@ namespace Receitas_API.Pages.TastyRecipes
         protected bool VideoVisibility { get; set; }
         protected bool RecipeDetailVisibility { get; set; }
         protected bool AlertMessageVisibility { get; set; }
-
-        int iCnt = 0;
 
         protected override async Task OnInitializedAsync()
         {

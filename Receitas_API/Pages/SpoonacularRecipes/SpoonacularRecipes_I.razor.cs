@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Receitas_API.Pages.SpoonacularRecipes
 {
-    public partial class Spoonacular2RecipeList
+    public partial class SpoonacularRecipes_I
     {
 
         protected SfSpinner SpinnerObj;
