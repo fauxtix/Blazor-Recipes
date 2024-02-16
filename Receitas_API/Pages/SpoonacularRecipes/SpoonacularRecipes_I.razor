@@ -55,7 +55,7 @@ else
 
 @if (recipesTitles == null)
 {
-    <LoadingData spinnerMessage="@(string.IsNullOrEmpty(searchMessage)?$"Filtrando dados para região/país '{RegionName}'":searchMessage)" />
+    <LoadingData spinnerMessage="Getting data..." />
 }
 else
 {
@@ -86,57 +86,44 @@ else
                                    Title="@recipesTitles.id.ToString()"></CardImage>
                         <CardContent>
                             <ChildContent>
-                                <p class="h5">
-                                    @recipesTitles.title
-                                </p>
+                                <h5 class="recipe-card-name">@recipesTitles.title</h5>
+                                <hr />
+                                <div class="container-fluid">
+                                    <SfChip>
+                                        <div class="recipe-icons">
+                                            <ChipItems>
+                                                <ChipItem class="e-primary" LeadingIconCss="fas fa-user-friends" Text="@servings"></ChipItem>
+                                                <ChipItem class="e-primary" LeadingIconCss="fas fa-clock" Text="@readyInMinutes"></ChipItem>
+                                                <ChipItem class="e-primary" LeadingIconCss="fas fa-thumbs-up" Text="@aggregateLikes"></ChipItem>
+                                            </ChipItems>
+                                        </div>
+                                    </SfChip>
+                                    <SfChip>
+                                        <ChipItems>
+                                            <div class="recipe-icons">
+                                                @foreach (var dishType in dishTypes)
+                                                {
+                                                    <ChipItem class="e-success" LeadingIconCss="fas fa-table" Text="@dishType"></ChipItem>
+                                                }
+                                            </div>
+                                        </ChipItems>
+                                    </SfChip>
+                                    <SfChip>
+                                        <ChipItems>
+                                            <div class="recipe-icons">
+                                                @foreach (var diet in diets)
+                                                {
+                                                    <ChipItem class="e-info" LeadingIconCss="fas fa-table" Text="@diet"></ChipItem>
+                                                }
+                                            </div>
+                                        </ChipItems>
+                                    </SfChip>
+                                </div>
                             </ChildContent>
                         </CardContent>
 
                     </SfCard>
-                    <div class="container-fluid">
-                        <SfChip>
-                            <div class="recipe-icons">
-                                <ChipItems>
-                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-user-friends" Text="@servings"></ChipItem>
-                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-clock" Text="@readyInMinutes"></ChipItem>
-                                    <ChipItem class="e-primary" LeadingIconCss="fas fa-thumbs-up" Text="@aggregateLikes"></ChipItem>
-                                </ChipItems>
-                            </div>
-                        </SfChip>
-                        <SfChip>
-                            <ChipItems>
-                                <div class="recipe-icons">
-                                    @foreach (var dishType in dishTypes)
-                                    {
-                                        <ChipItem class="e-success" LeadingIconCss="fas fa-table" Text="@dishType"></ChipItem>
-                                    }
-                                </div>
-                            </ChipItems>
-                        </SfChip>
-                        <SfChip>
-                            <ChipItems>
-                                <div class="recipe-icons">
-                                    @foreach (var cuisine in cuisines)
-                                    {
-                                        <ChipItem class="e-warning" LeadingIconCss="fas fa-table" Text="@cuisine"></ChipItem>
-                                    }
-                                </div>
-                            </ChipItems>
-                        </SfChip>
-                        <SfChip>
-                            <ChipItems>
-                                <div class="recipe-icons">
-                                    @foreach (var diet in diets)
-                                    {
-                                        <ChipItem class="e-info" LeadingIconCss="fas fa-table" Text="@diet"></ChipItem>
-                                    }
-                                </div>
-                            </ChipItems>
-                        </SfChip>
-                    </div>
-
-                    <hr />
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center mt-2">
                         <SfButton Content=" Go Top" CssClass="e-btn e-primary e-outline e-round-corner" IconCss="oi oi-arrow-circle-top" @onclick="GoTop" />
                     </div>
                 </div>

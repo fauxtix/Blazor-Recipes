@@ -34,7 +34,7 @@
 <hr />
 @if (recipesTitles == null)
 {
-    <LoadingData spinnerMessage="Loading recipes from Spoonacular api" />
+    <LoadingData spinnerMessage="Loading data..." />
 }
 else
 {
@@ -61,10 +61,10 @@ else
             </Header>
             <Content>
                 <div class="recipe-card">
+                    <figure class="figure.sixteen-nine-img">
+                        <img src="@RecipeDetail.image"/>
+                    </figure>
                     <div class="recipe-card-body">
-                        <div class="img-box">
-                            <img src="@RecipeDetail.image" />
-                        </div>
                         @{
                             var t = Task.Run(() => GetRecipeDetails(RecipeDetail.id));
                             t.Wait();
@@ -99,7 +99,7 @@ else
             </Content>
             <FooterTemplate>
                 <div>
-                    <SfButton CssClass="e-outline e-round-corner"
+                    <SfButton CssClass="e-primary e-outline e-round-corner"
                               IconCss="fas fa-times"
                               @onclick="(()=>RecipeDetailVisibility = false)" Content="Voltar">
                     </SfButton>
@@ -272,6 +272,22 @@ else
         text-align: center;
         border-style: groove;
     }
+
+    figure.sixteen-nine-img {
+        width: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding-top: 56.25%;
+        position: relative;
+    }
+
+        figure.sixteen-nine-img img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            transform: translate(-50%, -50%);
+        }
 
 </style>
 

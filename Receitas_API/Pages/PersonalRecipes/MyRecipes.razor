@@ -1,0 +1,157 @@
+﻿@page "/MyRecipes"
+@using Receitas_API.Components
+@using Receitas_API.Models
+@using Receitas_API.Pages.CodeBehind
+@using static Receitas_API.Models.Enums
+
+@inherits MyRecipesBase
+
+<PageTitle>My Recipes</PageTitle>
+<PageTitleComponent PageTitle="My Recipes" />
+
+<div id="spinnerContainer"></div>
+<SfSpinner @ref="SpinnerObj"
+           Label="Processando..."
+           Type="@SpinnerType.Bootstrap4"
+           CssClass="e-spin-overlay">
+</SfSpinner>
+
+@if (PersonalRecipes is null)
+{
+    <LoadingData />
+}
+else
+{
+    <div id="target" class="col-lg-12 control-section w-50">
+        <div class="row">
+            <div class="col-3 my-3">
+                <SfButton CssClass="e-btn e-success e-round-corner" IconCss="fa fa-plus"
+                          @onclick="AddRecipe" Content="Nova receita">
+                </SfButton>
+            </div>
+            <div class="table table-striped">
+                <SfGrid @ref="gridObj"
+                        DataSource="@PersonalRecipes"
+                        AllowPaging="true"
+                        AllowSorting="true"
+                        AllowFiltering="false"
+                        RowHeight="40"
+                        TValue="MyRecipe"
+                        AllowTextWrap="true">
+                    <GridPageSettings PageSize="12" PageCount="12" PageSizes="true"></GridPageSettings>
+                    <GridEvents TValue="MyRecipe" CommandClicked="OnCommandClicked"
+                                OnRecordDoubleClick="RecordDoubleClickHandler"
+                                RowSelected="RowSelectedHandler" />
+                    <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
+                    <GridColumns>
+                        <GridColumn Field=@nameof(MyRecipe.Id) IsPrimaryKey="true" AllowEditing="false"
+                                    Visible="false" HeaderText="ID#"
+                                    Width="250"></GridColumn>
+                        <GridColumn Field=@nameof(MyRecipe.Title) HeaderText="Título"
+                                    Width="250"></GridColumn>
+@*                         <GridColumn Field=@nameof(MyRecipe.Ingredients) HeaderText="Ingredientes"
+                                    DisableHtmlEncode="false"
+                                    Width="350"></GridColumn>
+ *@
+                        <GridColumn HeaderText="" AllowFiltering="false" AllowSorting="false" Width="150">
+                            <GridCommandColumns>
+                                <GridCommandColumn Type=CommandButtonType.Edit
+                                                   ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-primary e-round",
+                                                                           IconCss = "fa fa-edit"
+                                                                       })">
+                                </GridCommandColumn>
+                                <GridCommandColumn Type=CommandButtonType.Delete
+                                                   ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-danger e-round",
+                                                                           IconCss = "fa fa-trash"
+                                                                       })">
+                                </GridCommandColumn>
+                                <GridCommandColumn Type=CommandButtonType.None
+                                                   ButtonOption="@(new CommandButtonOptions()
+                                                                       {
+                                                                           CssClass = "e-btn e-success e-round",
+                                                                           IconCss = "fa fa-eye"
+                                                                       })">
+                                </GridCommandColumn>
+                            </GridCommandColumns>
+                        </GridColumn>
+                    </GridColumns>
+                </SfGrid>
+            </div>
+        </div>
+    </div>
+}
+
+<SfDialog EnableResize="true"
+          Width="60%"
+          IsModal="true"
+          CloseOnEscape="false"
+          ShowCloseIcon="false"
+          @bind-Visible="EditDialogVisibility">
+    <DialogTemplates>
+        <Header>
+            <div>Editar receita</div>
+        </Header>
+        <Content>
+            <MyRecipeEdit SelectedRecord="@SelectedRecipe" />
+        </Content>
+        <FooterTemplate>
+            <div>
+                <SfButton CssClass="e-btn e-primary e-icon e-round-corner" IconCss="fa fa-save"
+                          @onclick="AddOrSaveRecord">
+                    Save
+                </SfButton>
+                <SfButton CssClass="e-btn e-normal e-round-corner" IconCss="fa fa-times"
+                          Type="submit" @onclick="Voltar">
+                    Back
+                </SfButton>
+            </div>
+        </FooterTemplate>
+    </DialogTemplates>
+    <DialogAnimationSettings Effect="@Effects" Duration=400></DialogAnimationSettings>
+</SfDialog>
+
+<SfToast @ref="ToastObj"
+         Title="@ToastTitle"
+         Content="@ToastContent"
+         CssClass="@ToastCssClass" Timeout="3500"
+         ShowCloseButton="true">
+    <ToastPosition X="Right" Y="Top"></ToastPosition>
+</SfToast>
+
+<ConfirmDeleteComponent AlertMessageType="AlertMessageType.Warning"
+                        DialogTitle="Apagar receita"
+                        Message="@DeleteCaption" ConfirmationText="Confirma operação?"
+                        Visible="@DeleteVisibility"
+                        DialogWidth="20%"
+                        DialogHeight="auto"
+                        OnConfirmationYes="DeleteRecipe"
+                        OnConfirmationNo="ConfirmDeleteNo" />
+
+
+
+<style type="text/css" scoped>
+    .source-options {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        align-items: center;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .e-round-corner {
+        border-radius: 10px;
+    }
+
+    .e-attr {
+        font-weight: bolder;
+    }
+
+    .e-grid .e-rowcell.e-selectionbackground {
+        background-color: lavender !important;
+    }
+</style>

@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Receitas_API.Data;
 using Receitas_API.Models;
+using Receitas_API.Services.Interfaces;
 using Syncfusion.Blazor.Spinner;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,9 @@ namespace Receitas_API.Pages.SpoonacularRecipes
     {
 
         protected SfSpinner SpinnerObj;
+
+        [Inject] public ISpoonacularService service { get; set; }
+
 
         private CountriesCuisines.Root recipesTitles;
         private RecipeInformation.RecipeInfo recipeInformation;
@@ -59,30 +64,13 @@ namespace Receitas_API.Pages.SpoonacularRecipes
         {
             AlertVisibility = false;
             searchMessage = "";
-            await GetRecipeTitles();
+            recipesTitles = await GetRecipeTitles();
         }
 
-        private async Task GetRecipeTitles()
+        private async Task<CountriesCuisines.Root> GetRecipeTitles()
         {
-            try
-            {
-                var response = await httpClient.GetFromJsonAsync<CountriesCuisines.Root>(
-                    $"https://api.spoonacular.com/recipes/complexSearch?apiKey={apiKey}&cuisine={RegionName}");
-
-                if (response != null)
-                {
-                    recipesTitles = response;
-                }
-                else
-                {
-                    recipesTitles = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.Message);
-                recipesTitles = null;
-            }
+            var output = await service.GetRecipeTitles(RegionName);
+            return output;
         }
 
         private async void GoTop()
@@ -90,10 +78,11 @@ namespace Receitas_API.Pages.SpoonacularRecipes
             await JS.InvokeVoidAsync("OnScrollEvent"); // OnScrollEvent
         }
 
-        private async Task<RecipeInformation.RecipeInfo> GetRecipeInformation(int id)
+        private async Task<RecipeInformation.RecipeInfo> GetRecipeInformation(int Id)
         {
-            return await httpClient.GetFromJsonAsync<RecipeInformation.RecipeInfo>(
-                $"https://api.spoonacular.com/recipes/{id}/information?apiKey={apiKey}&includeNutrition=false");
+
+            var output = await service.GetRecipeInformation(Id);
+            return output;
         }
 
         private async void OnChangeRegion(Syncfusion.Blazor.DropDowns.ChangeEventArgs<string, CuisineRegion> args)
@@ -101,7 +90,7 @@ namespace Receitas_API.Pages.SpoonacularRecipes
             recipesTitles = null;
             RegionName = args.Value;
             searchMessage = $"Filtrando dados para região/país '{args.ItemData.RegionName}'. Aguarde, p.f.";
-            await GetRecipeTitles();
+            recipesTitles= await GetRecipeTitles();
             AlertVisibility = recipesTitles == null;
             StateHasChanged();
         }

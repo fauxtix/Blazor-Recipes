@@ -1,0 +1,66 @@
+﻿@using Receitas_API.Models
+@using Syncfusion.Blazor.RichTextEditor
+
+
+<div class="container-fluid">
+    <div class="mb-2">
+        <SfTextBox Enabled="true" Placeholder="Título"
+                   CssClass="form-control e-corner"
+                   FloatLabelType="@FloatLabelType.Auto"
+                   @bind-Value="@SelectedRecord.Title">
+        </SfTextBox>
+    </div>
+    <SfRichTextEditor EnableHtmlEncode="true"
+                      Placeholder="Ingredientes"
+                      EditorMode="EditorMode.HTML"
+                      @attributes="NumberOfRows"
+                      @bind-Value="@SelectedRecord.Ingredients">
+        <RichTextEditorToolbarSettings Items="@Tools" />
+    </SfRichTextEditor>
+    <div class="content">
+        <div class="detail-title">Preparação</div>
+        <SfRichTextEditor EnableHtmlEncode="true"
+                          EditorMode="EditorMode.HTML"
+                          @bind-Value="@SelectedRecord.Preparation">
+            <RichTextEditorToolbarSettings Items="@Tools" />
+        </SfRichTextEditor>
+    </div>
+
+    <SfTextBox Placeholder="Notas"
+               CssClass="form-control e-corner"
+               FloatLabelType="@FloatLabelType.Auto"
+               @bind-Value="@SelectedRecord.OtherInfo">
+    </SfTextBox>
+    <SfTextBox Enabled="true" Placeholder="Url"
+               CssClass="form-control e-corner"
+               FloatLabelType="@FloatLabelType.Auto"
+               @bind-Value="@SelectedRecord.RecipeUrl">
+    </SfTextBox>
+
+</div>
+
+
+@code {
+    [Parameter]
+    public MyRecipe SelectedRecord { get; set; }
+
+    private List<ToolbarItemModel> Tools = new List<ToolbarItemModel>()
+    {
+        new ToolbarItemModel() { Command = ToolbarCommand.Bold },
+        new ToolbarItemModel() { Command = ToolbarCommand.Italic },
+        new ToolbarItemModel() { Command = ToolbarCommand.Underline },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Formats },
+        new ToolbarItemModel() { Command = ToolbarCommand.Alignments },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.CreateLink },
+        new ToolbarItemModel() { Command = ToolbarCommand.Image },
+        new ToolbarItemModel() { Command = ToolbarCommand.Separator },
+        new ToolbarItemModel() { Command = ToolbarCommand.Undo },
+        new ToolbarItemModel() { Command = ToolbarCommand.Redo }
+    };
+    Dictionary<string, object> NumberOfRows = new Dictionary<string, object>()
+    {
+        { "rows", 3}
+    };
+}

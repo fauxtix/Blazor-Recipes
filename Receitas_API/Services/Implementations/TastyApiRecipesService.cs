@@ -67,10 +67,6 @@ namespace Receitas_API.Services.Implementations
             }
             catch (Exception ex)
             {
-                //if (ex.Message.ToLower().Contains("many"))
-                //{
-                //    var x = true;
-                //}
                 _logger.LogError(ex.Message);
                 return default;
             }

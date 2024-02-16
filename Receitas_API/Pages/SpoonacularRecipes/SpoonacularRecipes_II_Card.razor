@@ -11,12 +11,10 @@
     <div class="recipe-card">
         <div class="recipe-card-body">
             <div class="img-box">
-                <img class="img-fluid img-thumbnail"
-                     src="@SpoonacularRecipe.image" alt="imagem da receita" />
+                <img src="@SpoonacularRecipe.image" alt="imagem da receita" />
             </div>
             <h6 class="recipe-card-name"><b>@SpoonacularRecipe.title</b></h6>
             <div class="container-fluid ml-1 mr-1">
-
                 <div class="recipe-icons">
                     <SfChip>
                         <ChipItems>
@@ -27,18 +25,17 @@
                     </SfChip>
                 </div>
             </div>
-            <hr class="separator"/>
+            <hr class="separator" />
             <div class="d-flex justify-content-center align-items-center">
-                <p><SfButton IconCss="fa fa-eye" CssClass="e-primary" Content="View detail" @onclick="ShowDetail" /></p>
+                <SfButton IconCss="fa fa-eye" CssClass="e-primary e-outline e-round-corner" Content="View detail" @onclick="ShowDetail" />
             </div>
-            <hr />
         </div>
     </div>
 </div>
 
 <style type="text/css" scoped>
-    .separator{
-        width:90%;
+    .separator {
+        width: 90%;
         border-block: 2px solid;
     }
 </style>

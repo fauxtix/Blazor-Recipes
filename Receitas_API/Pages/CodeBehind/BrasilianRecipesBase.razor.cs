@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Hosting;
+using Receitas_API.Models;
+using Receitas_API.Services.Interfaces;
 using RestSharp;
+using Syncfusion.Blazor.Data;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Notifications;
 using Syncfusion.Blazor.Popups;
 using Syncfusion.Blazor.Spinner;
-using Syncfusion.Blazor.Data;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-
-using Microsoft.Extensions.Hosting;
-using Receitas_API.Models;
-using Receitas_API.Services.Interfaces;
 
 namespace Receitas_API.Pages.CodeBehind
 {
