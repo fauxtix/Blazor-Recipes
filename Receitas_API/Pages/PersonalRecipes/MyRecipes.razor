@@ -49,10 +49,6 @@ else
                                     Width="250"></GridColumn>
                         <GridColumn Field=@nameof(MyRecipe.Title) HeaderText="Título"
                                     Width="250"></GridColumn>
-@*                         <GridColumn Field=@nameof(MyRecipe.Ingredients) HeaderText="Ingredientes"
-                                    DisableHtmlEncode="false"
-                                    Width="350"></GridColumn>
- *@
                         <GridColumn HeaderText="" AllowFiltering="false" AllowSorting="false" Width="150">
                             <GridCommandColumns>
                                 <GridCommandColumn Type=CommandButtonType.Edit
@@ -85,15 +81,15 @@ else
     </div>
 }
 
-<SfDialog EnableResize="true"
-          Width="60%"
+<SfDialog Width="40%"
+          Height="auto"
           IsModal="true"
           CloseOnEscape="false"
           ShowCloseIcon="false"
           @bind-Visible="EditDialogVisibility">
     <DialogTemplates>
         <Header>
-            <div>Editar receita</div>
+            <div>@(EditMode ? "Editar receita" : "Nova receita")</div>
         </Header>
         <Content>
             <MyRecipeEdit SelectedRecord="@SelectedRecipe" />
@@ -101,12 +97,10 @@ else
         <FooterTemplate>
             <div>
                 <SfButton CssClass="e-btn e-primary e-icon e-round-corner" IconCss="fa fa-save"
-                          @onclick="AddOrSaveRecord">
-                    Save
+                          @onclick="AddOrSaveRecord" Content="Gravar">
                 </SfButton>
                 <SfButton CssClass="e-btn e-normal e-round-corner" IconCss="fa fa-times"
-                          Type="submit" @onclick="Voltar">
-                    Back
+                          @onclick="Voltar" Content="Voltar">
                 </SfButton>
             </div>
         </FooterTemplate>
@@ -124,7 +118,7 @@ else
 
 <ConfirmDeleteComponent AlertMessageType="AlertMessageType.Warning"
                         DialogTitle="Apagar receita"
-                        Message="@DeleteCaption" ConfirmationText="Confirma operação?"
+                        Message="@DeleteCaption"
                         Visible="@DeleteVisibility"
                         DialogWidth="20%"
                         DialogHeight="auto"

@@ -3,39 +3,74 @@
 
 
 <div class="container-fluid">
-    <div class="mb-2">
-        <SfTextBox Enabled="true" Placeholder="Título"
-                   CssClass="form-control e-corner"
-                   FloatLabelType="@FloatLabelType.Auto"
-                   @bind-Value="@SelectedRecord.Title">
-        </SfTextBox>
-    </div>
-    <SfRichTextEditor EnableHtmlEncode="true"
-                      Placeholder="Ingredientes"
-                      EditorMode="EditorMode.HTML"
-                      @attributes="NumberOfRows"
-                      @bind-Value="@SelectedRecord.Ingredients">
-        <RichTextEditorToolbarSettings Items="@Tools" />
-    </SfRichTextEditor>
-    <div class="content">
-        <div class="detail-title">Preparação</div>
-        <SfRichTextEditor EnableHtmlEncode="true"
-                          EditorMode="EditorMode.HTML"
-                          @bind-Value="@SelectedRecord.Preparation">
-            <RichTextEditorToolbarSettings Items="@Tools" />
-        </SfRichTextEditor>
-    </div>
+    <SfTab>
+        <TabItems>
+            <TabItem>
+                <HeaderTemplate>Minha receita</HeaderTemplate>
+                <ContentTemplate>
+                    <div class="mb-2">
+                        <SfTextBox Enabled="true" Placeholder="Título"
+                                   CssClass="form-control e-corner"
+                                   FloatLabelType="@FloatLabelType.Auto"
+                                   @bind-Value="@SelectedRecord.Title">
+                        </SfTextBox>
+                    </div>
+                    <div class="mb-2">
+                        <SfRichTextEditor EnableHtmlEncode="true"
+                                          Placeholder="Ingredientes"
+                                          EditorMode="EditorMode.HTML"
+                                          @attributes="NumberOfRows"
+                                          @bind-Value="@SelectedRecord.Ingredients">
+                            <RichTextEditorToolbarSettings Items="@Tools" />
+                        </SfRichTextEditor>
+                    </div>
+                    <div>
+                        <SfRichTextEditor EnableHtmlEncode="true"
+                                          Placeholder="Preparação"
+                                          EditorMode="EditorMode.HTML"
+                                          @bind-Value="@SelectedRecord.Preparation">
+                            <RichTextEditorToolbarSettings Items="@Tools" />
+                        </SfRichTextEditor>
+                    </div>
+                    <div class="mb-2">
+                        <SfTextBox Placeholder="Notas"
+                                   CssClass="form-control e-corner"
+                                   FloatLabelType="@FloatLabelType.Auto"
+                                   @bind-Value="@SelectedRecord.OtherInfo">
+                        </SfTextBox>
+                    </div>
+                </ContentTemplate>
+            </TabItem>
+            <TabItem>
+                <HeaderTemplate>A partir de Url</HeaderTemplate>
+                <ContentTemplate>
+                    <div class="mb-2">
+                        <SfTextBox Enabled="true" Placeholder="Título"
+                                   CssClass="form-control e-corner"
+                                   FloatLabelType="@FloatLabelType.Auto"
+                                   @bind-Value="@SelectedRecord.Title">
+                        </SfTextBox>
+                    </div>
+                    <div class="mb-2">
+                        <SfTextBox Enabled="true" Placeholder="Url"
+                                   CssClass="form-control e-corner"
+                                   FloatLabelType="@FloatLabelType.Auto"
+                                   @bind-Value="@SelectedRecord.RecipeUrl">
+                        </SfTextBox>
+                    </div>
+                    <div class="mb-2">
+                        <SfTextBox Placeholder="Notas"
+                                   CssClass="form-control e-corner"
+                                   FloatLabelType="@FloatLabelType.Auto"
+                                   @bind-Value="@SelectedRecord.OtherInfo">
+                        </SfTextBox>
+                    </div>
+                </ContentTemplate>
+            </TabItem>
 
-    <SfTextBox Placeholder="Notas"
-               CssClass="form-control e-corner"
-               FloatLabelType="@FloatLabelType.Auto"
-               @bind-Value="@SelectedRecord.OtherInfo">
-    </SfTextBox>
-    <SfTextBox Enabled="true" Placeholder="Url"
-               CssClass="form-control e-corner"
-               FloatLabelType="@FloatLabelType.Auto"
-               @bind-Value="@SelectedRecord.RecipeUrl">
-    </SfTextBox>
+        </TabItems>
+    </SfTab>
+
 
 </div>
 
@@ -64,3 +99,12 @@
         { "rows", 3}
     };
 }
+<style type="text/css" scoped>
+    .e-tab .e-tab-header .e-toolbar-item .e-tab-icon {
+        color: #badfba !important;
+    }
+
+    .e-tab .e-tab-header .e-toolbar-item .e-tab-wrap:hover {
+        background: #d3f1d5 !important;
+    }
+</style>
