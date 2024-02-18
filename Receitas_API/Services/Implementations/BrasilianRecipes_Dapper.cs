@@ -296,7 +296,57 @@ namespace Receitas_API.Services.Implementations
                     return null;
                 }
             }
-
         }
+        public async Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoIngredients()
+        {
+            using (var conn = _context.CreateConnection())
+            {
+                try
+                {
+                    var result = await conn.QueryAsync<RecipeDbModel.Recipe>("GetRecipesWithNoIngredients", commandType: CommandType.StoredProcedure);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoPreparation()
+        {
+            using (var conn = _context.CreateConnection())
+            {
+                try
+                {
+                    var result = await conn.QueryAsync<RecipeDbModel.Recipe>("GetRecipesWithNoPreparation", commandType: CommandType.StoredProcedure);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoPreparationNorIngredients()
+        {
+            using (var conn = _context.CreateConnection())
+            {
+                try
+                {
+                    var result = await conn.QueryAsync<RecipeDbModel.Recipe>("GetRecipesWithNoPreparationAndNoIngredients", commandType: CommandType.StoredProcedure);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return null;
+                }
+            }
+        }
+
     }
 }

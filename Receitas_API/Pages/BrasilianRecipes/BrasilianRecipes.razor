@@ -21,21 +21,67 @@
     var Tool = (new List<object>() {
         new ItemModel()
         {
-        Type = ItemType.Separator
-        },
-        new ItemModel()
-        {
             CssClass = "e-success",
-            PrefixIcon = "fa fa-question",
+            PrefixIcon = "fa fa-table",
             ShowTextOn = DisplayMode.Toolbar,
             Text = "Nomes iguais",
             Align = ItemAlign.Left,
             Id = "DupNames"
         },
+        new ItemModel()
+        {
+            Type = ItemType.Separator
+        },
+        new ItemModel()
+        {
+            CssClass = "e-success",
+            PrefixIcon = "fa fa-table",
+            ShowTextOn = DisplayMode.Toolbar,
+            Text = "Receitas sem ingredientes",
+            Align = ItemAlign.Left,
+            Id = "NoIngredients"
+        },
+        new ItemModel()
+        {
+            Type = ItemType.Separator
+        },
+        new ItemModel()
+        {
+            CssClass = "e-success",
+            PrefixIcon = "fa fa-table",
+            ShowTextOn = DisplayMode.Toolbar,
+            Text = "Receitas sem preparação",
+            Align = ItemAlign.Left,
+            Id = "NoPreparation"
+        },
+        new ItemModel()
+        {
+            Type = ItemType.Separator
+        },
+        new ItemModel()
+        {
+            CssClass = "e-success",
+            PrefixIcon = "fa fa-table",
+            ShowTextOn = DisplayMode.Toolbar,
+            Text = "Receitas sem ingredientes nem preparação",
+            Align = ItemAlign.Left,
+            Id = "NoPreparationNorIngredients"
+        },
                 new ItemModel()
         {
-        Type = ItemType.Separator
+            Type = ItemType.Separator
         },
+        new ItemModel()
+        {
+            CssClass = "e-success",
+            PrefixIcon = "fa fa-filter",
+            ShowTextOn = DisplayMode.Toolbar,
+            Text = "Todas as Receitas",
+            Align = ItemAlign.Left,
+            Id = "AllRecipes"
+        },
+
+
         "Search"
     });
     var InitSearch = (new string[] { "Description", "Id" });

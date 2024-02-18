@@ -192,6 +192,18 @@ namespace Receitas_API.Pages.CodeBehind
                 case "dupnames":
                     DupNamesDialogVisibility = true;
                     break;
+                case "nopreparation":
+                    brasilianRecipes = await RecipeService.GetRecipesWithNoPreparation();
+                    break;
+                case "noingredients":
+                    brasilianRecipes = await RecipeService.GetRecipesWithNoIngredients();
+                    break;
+                case "nopreparationnoringredients":
+                    brasilianRecipes = await RecipeService.GetRecipesWithNoPreparationNorIngredients();
+                    break;
+                case "allrecipes":
+                    brasilianRecipes = await RecipeService.GetAllRecipes();
+                    break;
                 case "details":
                     ShowDetailDialogVisibility = true;
                     break;

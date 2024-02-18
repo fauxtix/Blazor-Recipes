@@ -6,19 +6,8 @@
                      src="@Recipe.link_imagem" alt="imagem da receita" />
             </div>
             <h6 class="recipe-card-name"><b>@Recipe.receita</b></h6>
-            <div class="recipe-icons">
-                <SfChip>
-                    <ChipItems>
-                        <ChipItem class="e-outline" LeadingIconCss="fas fa-calendar" Text="@Recipe.created_at.ToShortDateString()"></ChipItem>
-                        <ChipItem class="e-outline" LeadingIconCss="fas fa-table" Text="@Recipe.tipo"></ChipItem>
-                    </ChipItems>
-                </SfChip>
+            <div class="d-flex justify-content-center mt-1">
+                <SfButton IconCss="fa fa-eye" CssClass="e-primary" Content="Detalhe" @onclick="ShowDetail" />
             </div>
-            <hr class="separator" />
-            <div class="d-flex justify-content-center">
-                <p><SfButton IconCss="fa fa-eye" CssClass="e-primary" Content="View detail" @onclick="ShowDetail" /></p>
-            </div>
-            <hr />
         </div>
     </div>
-

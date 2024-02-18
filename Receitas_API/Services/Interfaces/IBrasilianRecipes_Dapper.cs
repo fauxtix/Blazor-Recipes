@@ -21,5 +21,8 @@ namespace Receitas_API.Services.Interfaces
         List<RecipeDbModel.Other> GetOtherById(int Id);
         void Delete_Recipe(int id);
         Task<IEnumerable<BrasilianEqualNames>> GetEqualRecipesNames();
+        Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoIngredients();
+        Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoPreparation();
+        Task<IEnumerable<RecipeDbModel.Recipe>> GetRecipesWithNoPreparationNorIngredients();
     }
 }
