@@ -14,11 +14,11 @@ using System.Threading.Tasks;
 
 namespace Receitas_API.Services.Implementations
 {
-    public class BrasilianRecipes_Dapper : IBrasilianRecipes_Dapper
+    public class BrasilianRecipesIService : IBrasilianRecipesIService
     {
         private readonly IDapperContext _context;
-        private readonly ILogger<BrasilianRecipes_Dapper> _logger;
-        public BrasilianRecipes_Dapper(ILogger<BrasilianRecipes_Dapper> logger, IDapperContext context)
+        private readonly ILogger<BrasilianRecipesIService> _logger;
+        public BrasilianRecipesIService(ILogger<BrasilianRecipesIService> logger, IDapperContext context)
         {
             _logger = logger;
             _context = context;

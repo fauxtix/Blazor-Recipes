@@ -22,7 +22,7 @@ namespace Receitas_API.Pages.CodeBehind
         protected IWebHostEnvironment Env { get; set; }
 
         [Inject]
-        protected IBrasilianRecipes_Dapper RecipeService { get; set; }
+        protected IBrasilianRecipesIService RecipeService { get; set; }
 
         protected SfSpinner SpinnerObj;
 
@@ -54,12 +54,13 @@ namespace Receitas_API.Pages.CodeBehind
 
         public int recipeID { get; set; }
         protected string DeleteCaption;
-
+        protected string TitleCaption;
 
         protected override async Task OnInitializedAsync()
         {
             DupNamesDialogVisibility = false;
             DeleteCaption = "";
+            TitleCaption = "Todas";
             brasilianRecipes = await RecipeService.GetAllRecipes();
             if (brasilianRecipes.Count() == 0)
             {
@@ -188,21 +189,26 @@ namespace Receitas_API.Pages.CodeBehind
             {
                 case "clearsearch":
                     await gridObj.SearchAsync("");
+                    TitleCaption = "Todas";
                     break;
                 case "dupnames":
                     DupNamesDialogVisibility = true;
                     break;
                 case "nopreparation":
                     brasilianRecipes = await RecipeService.GetRecipesWithNoPreparation();
+                    TitleCaption = "Sem preparação";
                     break;
                 case "noingredients":
                     brasilianRecipes = await RecipeService.GetRecipesWithNoIngredients();
+                    TitleCaption = "Sem ingredientes";
                     break;
                 case "nopreparationnoringredients":
                     brasilianRecipes = await RecipeService.GetRecipesWithNoPreparationNorIngredients();
+                    TitleCaption = "Sem preparação/ingredientes";
                     break;
                 case "allrecipes":
                     brasilianRecipes = await RecipeService.GetAllRecipes();
+                    TitleCaption = "Todas";
                     break;
                 case "details":
                     ShowDetailDialogVisibility = true;

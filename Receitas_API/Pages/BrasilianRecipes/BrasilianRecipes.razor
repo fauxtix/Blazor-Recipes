@@ -19,15 +19,15 @@
 
 @{
     var Tool = (new List<object>() {
-        new ItemModel()
-        {
-            CssClass = "e-success",
-            PrefixIcon = "fa fa-table",
-            ShowTextOn = DisplayMode.Toolbar,
-            Text = "Nomes iguais",
-            Align = ItemAlign.Left,
-            Id = "DupNames"
-        },
+        // new ItemModel()
+        // {
+        //     CssClass = "e-success",
+        //     PrefixIcon = "fa fa-table",
+        //     ShowTextOn = DisplayMode.Toolbar,
+        //     Text = "Nomes iguais",
+        //     Align = ItemAlign.Left,
+        //     Id = "DupNames"
+        // },
         new ItemModel()
         {
             Type = ItemType.Separator
@@ -80,8 +80,6 @@
             Align = ItemAlign.Left,
             Id = "AllRecipes"
         },
-
-
         "Search"
     });
     var InitSearch = (new string[] { "Description", "Id" });
@@ -90,7 +88,7 @@
     };
 }
 
-<PageTitleComponent PageTitle="Receitas do Brasil I" />
+<PageTitleComponent PageTitle="Receitas do Brasil I" PageSubTitle="@TitleCaption" WithBadge="true" />
 
 
 <div id="spinnerContainer"></div>
@@ -250,6 +248,7 @@ else
 <SfDialog Width="60%"
           Height="auto"
           IsModal="true"
+          EnableResize="true"
           CloseOnEscape="false"
           Visible="@ShowDetailDialogVisibility"
           ShowCloseIcon="false">

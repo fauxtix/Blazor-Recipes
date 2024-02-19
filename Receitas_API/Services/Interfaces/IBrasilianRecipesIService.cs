@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Receitas_API.Services.Interfaces
 {
-    public interface IBrasilianRecipes_Dapper
+    public interface IBrasilianRecipesIService
     {
         Task CreateDbDataFromApi();
         Task Update_RecipeTable();

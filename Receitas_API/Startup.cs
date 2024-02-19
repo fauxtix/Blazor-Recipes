@@ -32,10 +32,10 @@ namespace Receitas_API
             services.AddSingleton(sqlConnectionConfiguration);
 
             services.AddTransient<IDapperContext, DapperContext>();
-            services.AddTransient<IBrasilianRecipes_Dapper, BrasilianRecipes_Dapper>();
+            services.AddTransient<IBrasilianRecipesIService, BrasilianRecipesIService>();
+            services.AddTransient<IBrasilianRecipesIIService, BrasilianRecipesIIService>();
             services.AddTransient<ITastyApiRecipesService, TastyApiRecipesService>();
             services.AddTransient<ISpoonacularService, SpoonacularService>();
-            services.AddTransient<IBrasilianRecipesIIService, BrasilianRecipesIIService>();
             services.AddTransient<IMyRecipesService, MyRecipesService>();
 
             services.AddSyncfusionBlazor();

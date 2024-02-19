@@ -43,7 +43,7 @@
     public int RecipeId { get; set; }
 
     [Inject]
-    protected IBrasilianRecipes_Dapper RecipeService { get; set; }
+    protected IBrasilianRecipesIService RecipeService { get; set; }
 
     List<RecipeDbModel.Ingredient> Ingredients;
     List<RecipeDbModel.Preparation> Preparation;
