@@ -7,6 +7,7 @@
 @using Syncfusion.Blazor.Spinner
 @using Syncfusion.Blazor.Buttons
 @using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Notifications
 
 @using System.Linq;
 @using Receitas_API.Data
@@ -15,7 +16,7 @@
 @inject IJSRuntime JS
 
 @using Syncfusion.Blazor
-@using Syncfusion.Blazor.Notifications
+
 
 <PageTitleComponent PageTitle="Tasty Recipes"
                     WithBadge="@(recipesCount > 0)" PageSubTitle="@(recipesCount > 0? recipesCount.ToString():"")" />
@@ -187,7 +188,9 @@ else
         </DialogTemplates>
     </SfDialog>
 }
-
+<div>
+    <SfMessage/>
+</div>
 
 
 <style type="text/css" scoped>

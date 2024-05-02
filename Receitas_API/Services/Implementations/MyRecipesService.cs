@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Receitas_API.Services.Interfaces;
 using static Receitas_API.Models.RecipeDbModel;
+using System.Data.SqlClient;
 
 namespace Receitas_API.Services.Implementations
 {
@@ -43,11 +44,17 @@ namespace Receitas_API.Services.Implementations
                 using (var conn = _context.CreateConnection())
                 {
                     var results = await conn.QueryAsync<MyRecipe>("usp_GetAll_MyRecipes",
-                        commandType: CommandType.StoredProcedure);
+                        null, null,  1, commandType: CommandType.StoredProcedure);
 
                     return results.ToList();
                 }
 
+            }
+
+            catch (SqlException ex)
+            {
+                _logger.LogError(ex.Message, ex);
+                return Enumerable.Empty<MyRecipe>();
             }
             catch (Exception ex)
             {

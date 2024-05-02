@@ -122,10 +122,10 @@ namespace Receitas_API.Pages.TastyRecipes
                 return SortedList;
 
             }
-            catch (System.Exception ex)
+            catch
             {
-                var x = ex.Message;
-                throw;
+                AlertMessageVisibility = true;
+                return new();
             }
         }
 

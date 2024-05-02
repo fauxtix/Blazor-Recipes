@@ -3,6 +3,8 @@
 @using Receitas_API.Models
 @using Receitas_API.Pages.CodeBehind
 @using static Receitas_API.Models.Enums
+@using Syncfusion.Blazor.Notifications
+
 
 @inherits MyRecipesBase
 
@@ -78,6 +80,12 @@ else
                 </SfGrid>
             </div>
         </div>
+    </div>
+
+    <div>
+        <AlertMessage Message="No records  to show or Database not initialized"
+                      Visibile="@WarningVisibility"
+                      MessageType="AlertMessageType.Warning"></AlertMessage>
     </div>
 }
 

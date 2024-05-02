@@ -1,6 +1,6 @@
 ﻿@using Receitas_API.Models
 
-@if (!string.IsNullOrWhiteSpace(Message))
+@if (!string.IsNullOrWhiteSpace(Message)  && Visibile)
 {
     <div class="alert @alertClass">@Message <span @onclick="HideMessage"></span></div>
 }
@@ -8,6 +8,8 @@
 @code {
     [Parameter]
     public string Message { get; set; }
+    [Parameter]
+    public bool Visibile  { get; set; }
 
     private Enums.AlertMessageType messageType;
     [Parameter]

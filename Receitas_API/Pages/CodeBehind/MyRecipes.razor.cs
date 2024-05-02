@@ -45,6 +45,8 @@ namespace Receitas_API.Pages.CodeBehind
         protected string ToastContent = "";
         protected string ToastCssClass = "";
 
+        protected bool WarningVisibility = false;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -54,7 +56,15 @@ namespace Receitas_API.Pages.CodeBehind
 
         protected async Task<IEnumerable<MyRecipe>> GetAllRecipes()
         {
-            return (await MyRecipesService.GetAllRecipes()).ToList();
+            WarningVisibility = false;
+            var res =  (await MyRecipesService.GetAllRecipes()).ToList();
+            if (res.Any())
+                return res;
+            else
+            {
+                WarningVisibility = true;
+                return Enumerable.Empty<MyRecipe>();
+            }
         }
 
         protected void AddRecipe()
